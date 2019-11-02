@@ -9,7 +9,7 @@ function App() {
   <div>  
     <div className="Header">
       <div className="Hat">
-        🎓
+        <span role="img" aria-label="Logo">🎓</span>
       </div>
       <div className="Title">
         Расписание
@@ -119,7 +119,7 @@ function App() {
       </div>
     </div>
     <div className="Footer">
-      <a href="https://github.com/sgbliznyuk">© 2019 Simon B 🧐</a>
+      <a href="https://github.com/sgbliznyuk">© 2019 Simon B <span role="img" aria-label="Smile">🧐</span></a>
     </div>
   </div>
   );
