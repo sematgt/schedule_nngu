@@ -123,11 +123,11 @@
     font-family: "Roboto";
 }
 
-@font-face{
+/* @font-face{
     font-family: 'Pixel Cyr';
     src: local('Pixel Cyr'),
     url('/frontend/public/3572.ttf');
-}
+} */
 
 .Header .Nngu{
     display: flex;
