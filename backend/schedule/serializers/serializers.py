@@ -18,3 +18,12 @@ class StudyGroupSerializer(serializers.ModelSerializer):
     class Meta:
         model = StudyGroup
         fields = ['name']
+
+
+class WeeksSerializer(serializers.ModelSerializer):
+    
+    
+
+    class Meta:
+        model = CommonData
+        fields = ['id', 'weeks']

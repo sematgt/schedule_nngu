@@ -43,8 +43,10 @@ export default function DropdownGroups(props) {
           onChange={handleChange}
           labelWidth={labelWidth}
         >
-        {props.groups.map((group) => (
-        <MenuItem value={group.name} key={group.name}>{group.name}</MenuItem>))}
+        { (props.groups) &&
+          props.groups.map((group) => (
+          <MenuItem value={group.name} key={group.name}>{group.name}</MenuItem>))
+        }
         </Select>
       </FormControl>
     </div>

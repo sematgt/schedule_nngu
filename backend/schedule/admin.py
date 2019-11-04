@@ -12,7 +12,7 @@ class SpeakerAdmin(admin.ModelAdmin):
     list_filter = ['department']
     search_fields = ['name__icontains']
 
-for r in (Subject, Classroom, StudyGroup):
+for r in (Subject, Classroom, StudyGroup, CommonData):
     admin.site.register(r)
 
 admin.site.register(Lesson, LessonAdmin)
