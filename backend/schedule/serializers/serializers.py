@@ -25,5 +25,5 @@ class WeeksSerializer(serializers.ModelSerializer):
     
 
     class Meta:
-        model = CommonData
-        fields = ['weeks']
+        model = Weeks
+        fields = ['week', 'current']

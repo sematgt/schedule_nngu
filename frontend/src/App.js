@@ -21,8 +21,15 @@ class App extends React.Component {
             error_in_weeks: null,
             days: [],
             today: Date(),
+            selected_week: 'default',
         };
         this.getDataFromAPI = this.getDataFromAPI.bind(this);
+        this.getWeekFromDropdown = this.getWeekFromDropdown.bind(this);
+    }
+
+    getWeekFromDropdown(selected_week) {
+        console.log(selected_week);
+        this.setState({selected_week: selected_week})
     }
 
     componentDidMount() {
@@ -110,7 +117,7 @@ class App extends React.Component {
                             </div>
 
                             <div className="Dropdown">
-                                <DropdownWeeks text="Неделя" weeks={weeks} />
+                                <DropdownWeeks text="Неделя" weeks={weeks} getWeekFromDropdown={this.getWeekFromDropdown} />
                             </div>
                             <div className="Nngu">
                                 Аф ННГУ им. Н.И. Лобачевского
@@ -121,7 +128,7 @@ class App extends React.Component {
                                 <div className="Schedule-cell" id="left">
 
                                 </div>
-                                <div className="Schedule-cell">{this.state.days[0]}</div>
+                                <div className="Schedule-cell">{this.state.days[0]} {this.state.selected_week}</div>
                                 <div className="Schedule-cell">{this.state.days[1]}</div>
                                 <div className="Schedule-cell">{this.state.days[2]}</div>
                                 <div className="Schedule-cell">{this.state.days[3]}</div>

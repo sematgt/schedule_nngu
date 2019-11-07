@@ -1,6 +1,7 @@
 from django.db import models
 from schedule.utils.calcutale import GetFirstDaysOfAllWeeks, GetLessonsIn3Months
 import json
+from datetime import date, datetime
 
 class Speaker(models.Model):
     name = models.CharField('ФИО', max_length=70, unique=True)
@@ -48,8 +49,14 @@ class StudyGroup(models.Model):
 class LessonQuerySet(models.QuerySet):
 
     def delete(self, *args, **kwargs):
-        CommonData.objects.get(id__exact=1).GetWeeks()
         super().delete(*args, **kwargs)
+        Weeks.objects.all().delete()
+        first_days_list = GetFirstDaysOfAllWeeks(GetLessonsIn3Months())
+        for day in first_days_list:
+            w = Weeks.objects.create(week=day)
+            if datetime.strptime(day, '%Y-%m-%d').date() == date.today():
+                w.update(current=True)
+            w.save()
 
 class Lesson(models.Model):
 
@@ -77,11 +84,24 @@ class Lesson(models.Model):
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
-        CommonData.objects.get(id__exact=1).GetWeeks()
+        Weeks.objects.all().delete()
+        first_days_list = GetFirstDaysOfAllWeeks(GetLessonsIn3Months())
+        for day in first_days_list:
+            w = Weeks.objects.create(week=day)
+            if datetime.strptime(day, '%Y-%m-%d').date() == date.today():
+                w.update(current=True)
+            w.save()
+
 
     def delete(self, *args, **kwargs):
         super().delete(*args, **kwargs)
-        CommonData.objects.get(id__exact=1).GetWeeks()
+        Weeks.objects.all().delete()
+        first_days_list = GetFirstDaysOfAllWeeks(GetLessonsIn3Months())
+        for day in first_days_list:
+            w = Weeks.objects.create(week=day)
+            if datetime.strptime(day, '%Y-%m-%d').date() == date.today():
+                w.update(current=True)
+            w.save()
 
     class Meta:
         verbose_name = 'Занятие'
@@ -89,18 +109,29 @@ class Lesson(models.Model):
         unique_together = ['class_number', 'study_group', 'date_day']
 
 
-class CommonData(models.Model):
+# class CommonData(models.Model):
 
-    weeks = models.TextField(default=[])
+#     weeks = models.TextField(default=[])
 
-    def GetWeeks(self):
+#     def GetWeeks(self):
 
-        self.weeks = json.dumps(GetFirstDaysOfAllWeeks(GetLessonsIn3Months()))
-        self.save()
+#         self.weeks = json.dumps(GetFirstDaysOfAllWeeks(GetLessonsIn3Months()))
+#         self.save()
 
-    def __str__(self):
-        return 'id=' + str(self.id) + 'weeks=' + str(self.weeks)
+#     def __str__(self):
+#         return 'id=' + str(self.id) + 'weeks=' + str(self.weeks)
+
+#     class Meta:
+#         verbose_name = 'Common Data'
+#         verbose_name_plural = 'Common Data'
+
+class Weeks(models.Model):
+
+    week = models.CharField(max_length=10)
+    current = models.BooleanField(default=False)
 
     class Meta:
-        verbose_name = 'Common Data'
-        verbose_name_plural = 'Common Data'
+        verbose_name_plural = 'Weeks'
+  
+    def __str__(self):
+        return str(self.week) + ' ' + str(self.current)

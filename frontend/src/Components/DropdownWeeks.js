@@ -28,6 +28,7 @@ export default function DropdownWeeks(props) {
 
   const handleChange = event => {
     setSelected_week(event.target.value);
+    props.getWeekFromDropdown(event.target.value);
   };
   
   return (

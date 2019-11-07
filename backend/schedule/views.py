@@ -1,7 +1,7 @@
 import datetime
 from rest_framework import viewsets, generics
 from .serializers.serializers import LessonSerializer, StudyGroupSerializer, WeeksSerializer
-from .models import StudyGroup, Lesson, CommonData
+from .models import StudyGroup, Lesson, Weeks
 from .utils.calcutale import GetLessonsIn3Months, GetFirstDaysOfAllWeeks
 
 class LessonViewSet(viewsets.ModelViewSet):
@@ -13,7 +13,7 @@ class StudyGroupViewSet(viewsets.ModelViewSet):
     queryset = StudyGroup.objects.all()
     serializer_class = StudyGroupSerializer
 
-class WeeksView(generics.ListAPIView):
+class WeeksViewSet(viewsets.ModelViewSet):
 
-    queryset = CommonData.objects.all() 
+    queryset = Weeks.objects.all() 
     serializer_class = WeeksSerializer

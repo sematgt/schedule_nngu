@@ -6,12 +6,12 @@ from schedule import views
 router = routers.DefaultRouter()
 router.register('lessons', views.LessonViewSet)
 router.register('groups', views.StudyGroupViewSet)
-# router.register('weeks', views.WeeksViewSet)
+router.register('weeks', views.WeeksViewSet)
 
 
 urlpatterns = [
     path('', include(router.urls)),
     path('admin/', admin.site.urls),
-    path('weeks/', views.WeeksView.as_view())
+    # path('weeks/', views.WeeksView.as_view())
     # path('api/', include('rest_framework.urls')),
 ]
