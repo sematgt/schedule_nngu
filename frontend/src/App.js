@@ -28,7 +28,6 @@ class App extends React.Component {
     }
 
     getWeekFromDropdown(selected_week) {
-        console.log(selected_week);
         this.setState({selected_week: selected_week})
     }
 

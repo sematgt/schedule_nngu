@@ -109,22 +109,6 @@ class Lesson(models.Model):
         unique_together = ['class_number', 'study_group', 'date_day']
 
 
-# class CommonData(models.Model):
-
-#     weeks = models.TextField(default=[])
-
-#     def GetWeeks(self):
-
-#         self.weeks = json.dumps(GetFirstDaysOfAllWeeks(GetLessonsIn3Months()))
-#         self.save()
-
-#     def __str__(self):
-#         return 'id=' + str(self.id) + 'weeks=' + str(self.weeks)
-
-#     class Meta:
-#         verbose_name = 'Common Data'
-#         verbose_name_plural = 'Common Data'
-
 class Weeks(models.Model):
 
     week = models.CharField(max_length=10)

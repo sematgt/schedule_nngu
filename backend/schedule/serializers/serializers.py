@@ -26,4 +26,4 @@ class WeeksSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Weeks
-        fields = ['week', 'current']
+        fields = ['id', 'week', 'current']
