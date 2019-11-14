@@ -17,6 +17,7 @@ class DropdownGroups extends React.Component{
     this.setState({
       selected_group: event.target.value
     });
+    this.props.getGroupFromDropdown(event.target.value);
   };
   
   render() {

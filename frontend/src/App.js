@@ -20,10 +20,12 @@ class App extends React.Component {
             days: [],
             today: Date(),
             selected_week: '',
+            selected_group: '',
         };
         this.getDataFromAPI = this.getDataFromAPI.bind(this);
         this.getWeekFromDropdown = this.getWeekFromDropdown.bind(this);
         this.handleTodayClick = this.handleTodayClick.bind(this);
+        this.getGroupFromDropdown = this.getGroupFromDropdown.bind(this);
         this.myRef = React.createRef();
     }
     
@@ -31,6 +33,10 @@ class App extends React.Component {
         this.setState({selected_week: selected_week})
     }
     
+    getGroupFromDropdown(selected_group) {
+        this.setState({selected_group: selected_group})
+    }
+
     componentDidMount() {
         this.getDataFromAPI();
         var days_array = [11, 12, 13, 14, 15, 16].map(i => i);
@@ -119,7 +125,7 @@ class App extends React.Component {
                                 Октябрь 2019
                     </div>
                             <div className="Dropdown">
-                                <DropdownGroups text="Группа" groups={groups} />
+                                <DropdownGroups text="Группа" groups={groups} getGroupFromDropdown={this.getGroupFromDropdown}/>
                             </div>
 
                             <div className="Dropdown">
@@ -132,9 +138,9 @@ class App extends React.Component {
                         <div className="Schedule-wrapper">
                             <div className="Schedule-row">
                                 <div className="Schedule-cell" id="left">
-
+                                {this.state.selected_week} <br/> {this.state.selected_group}
                                 </div>
-                                <div className="Schedule-cell">{this.state.days[0]} {this.state.selected_week}</div>
+                                <div className="Schedule-cell">{this.state.days[0]}</div>
                                 <div className="Schedule-cell">{this.state.days[1]}</div>
                                 <div className="Schedule-cell">{this.state.days[2]}</div>
                                 <div className="Schedule-cell">{this.state.days[3]}</div>
