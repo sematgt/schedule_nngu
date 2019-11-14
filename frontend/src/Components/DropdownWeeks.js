@@ -27,7 +27,6 @@ class DropdownWeeks extends React.Component{
       selected_week: week,
     });
     this.props.getWeekFromDropdown(week);
-    console.log('changeSelectedWeek() call from DropdownWeeks. week =', week)
   }
   
   render() {
