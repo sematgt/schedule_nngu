@@ -17,8 +17,6 @@ class App extends React.Component {
             weeksIsLoaded: false,
             error_in_groups: null,
             error_in_weeks: null,
-            days: [],
-            today: Date(),
             selected_week: '',
             selected_group: '',
         };
@@ -89,6 +87,46 @@ class App extends React.Component {
 
     render() {
 
+        var days= [];
+        var d;
+        var wd;
+        if (this.state.selected_week) {
+            d = new Date(Date.parse(this.state.selected_week));
+            wd = d.toLocaleDateString('RU-ru', { weekday: 'short' });
+            days.push({
+                wday: wd,
+                day: d.getDate(),
+            });
+            for (let i=0; i<5; i++) {
+                d.setDate(d.getDate()+1)
+                wd = d.toLocaleDateString('RU-ru', { weekday: 'short' });
+                days.push({
+                    wday: wd,
+                    day: d.getDate(),
+                });
+            };
+        }
+        else {
+            d = new Date();
+            if (d.getDay() !== 0) 
+            d.setDate(d.getDate()-(d.getDay()-1))
+            else
+            d.setDate(d.getDate()-6);
+            wd = d.toLocaleDateString('RU-ru', { weekday: 'short' });
+            days.push({
+                wday: wd,
+                day: d.getDate(),
+            });
+            for (let i=0; i<5; i++) {
+                d.setDate(d.getDate()+1);
+                wd = d.toLocaleDateString('RU-ru', { weekday: 'short' });
+                days.push({
+                    wday: wd,
+                    day: d.getDate(),
+                });
+            };
+        }
+
         const {groups, weeks, groupsIsLoaded, weeksIsLoaded, error_in_groups, error_in_weeks} = this.state;
         if (error_in_groups) {
             return <div>Ошибка: {error_in_groups.message} </div>;
@@ -140,12 +178,14 @@ class App extends React.Component {
                                 <div className="Schedule-cell" id="left">
                                 {this.state.selected_week} <br/> {this.state.selected_group}
                                 </div>
-                                <div className="Schedule-cell">{this.state.days[0]}</div>
-                                <div className="Schedule-cell">{this.state.days[1]}</div>
-                                <div className="Schedule-cell">{this.state.days[2]}</div>
-                                <div className="Schedule-cell">{this.state.days[3]}</div>
-                                <div className="Schedule-cell">{this.state.days[4]}</div>
-                                <div className="Schedule-cell">{this.state.days[5]}</div>
+                                {
+                                    days.map((day) => <div 
+                                    className="Schedule-cell" 
+                                    key={day.day}
+                                    >
+                                    {day.wday}<br />{day.day}
+                                    </div>)
+                                    }
                             </div>
                             <div className="Schedule-row">
                                 <div className="Schedule-cell" id="left"><span>

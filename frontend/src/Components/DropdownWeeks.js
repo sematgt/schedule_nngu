@@ -18,7 +18,6 @@ class DropdownWeeks extends React.Component{
     this.setState({
       selected_week: event.target.value,
     });
-    console.log(event.target.value);
     this.props.getWeekFromDropdown(event.target.value);
   };
   
