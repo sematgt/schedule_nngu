@@ -10,7 +10,7 @@ class LessonSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Lesson
-        fields = ['__str__', 'date_day', 'class_number', 'study_group', 'subject', 'speaker', 'classroom']
+        fields = ['id', '__str__', 'date_day', 'class_number', 'study_group', 'subject', 'speaker', 'classroom']
       
 
 

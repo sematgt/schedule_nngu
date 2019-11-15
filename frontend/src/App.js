@@ -13,10 +13,13 @@ class App extends React.Component {
         this.state = {
             groups: [],
             weeks: [],
+            lessons: [],
             groupsIsLoaded: false,
             weeksIsLoaded: false,
+            lessonsIsLoaded: false,
             error_in_groups: null,
             error_in_weeks: null,
+            error_in_lessons: null,
             selected_week: '',
             selected_group: '',
         };
@@ -59,24 +62,42 @@ class App extends React.Component {
             }
             );
             
-            fetch('http://localhost:5000/weeks/')
-            .then(response => response.json())
-            .then(
-                (result) => {
-                    this.setState({
-                        weeks: result,
-                        weeksIsLoaded: true,
-                    });
-                },
-                (error_in_weeks) => {
-                    this.setState({
-                        weeksIsLoaded: true,
-                        error_in_weeks
-                    });
-                }
-                );
+        fetch('http://localhost:5000/weeks/')
+        .then(response => response.json())
+        .then(
+            (result) => {
+                this.setState({
+                    weeks: result,
+                    weeksIsLoaded: true,
+                });
+            },
+            (error_in_weeks) => {
+                this.setState({
+                    weeksIsLoaded: true,
+                    error_in_weeks
+                });
             }
-            
+            );
+        
+    
+        fetch('http://localhost:5000/lessons/')
+        .then(response => response.json())
+        .then(
+            (result) => {
+                this.setState({
+                    lessons: result,
+                    lessonsIsLoaded: true,
+                });
+            },
+            (error_in_lessons) => {
+                this.setState({
+                    lessonsIsLoaded: true,
+                    error_in_lessons
+                });
+            }
+            );
+        }
+
     handleTodayClick() {
         let current_week = this.state.weeks.find((week) => week.current);
         current_week ?
@@ -96,6 +117,7 @@ class App extends React.Component {
             days.push({
                 wday: wd,
                 day: d.getDate(),
+                date: d.toISOString().slice(0,10),
             });
             for (let i=0; i<5; i++) {
                 d.setDate(d.getDate()+1)
@@ -103,6 +125,7 @@ class App extends React.Component {
                 days.push({
                     wday: wd,
                     day: d.getDate(),
+                    date: d.toISOString().slice(0,10),
                 });
             };
         }
@@ -116,6 +139,7 @@ class App extends React.Component {
             days.push({
                 wday: wd,
                 day: d.getDate(),
+                date: d.toISOString().slice(0,10),
             });
             for (let i=0; i<5; i++) {
                 d.setDate(d.getDate()+1);
@@ -123,23 +147,30 @@ class App extends React.Component {
                 days.push({
                     wday: wd,
                     day: d.getDate(),
+                    date: d.toISOString().slice(0,10),
                 });
             };
         }
 
-        const {groups, weeks, groupsIsLoaded, weeksIsLoaded, error_in_groups, error_in_weeks} = this.state;
+        const {groups, weeks, lessons, groupsIsLoaded, weeksIsLoaded, lessonsIsLoaded, error_in_groups, error_in_weeks, error_in_lessons} = this.state;
         if (error_in_groups) {
             return <div>Ошибка: {error_in_groups.message} </div>;
         }
             else if (error_in_weeks) {
                 return <div>Ошибка: {error_in_weeks.message} </div>;
         }
+            else if (error_in_lessons) {
+                return <div>Ошибка: {error_in_lessons.message} </div>;
+        }
             else if (!weeksIsLoaded) {
                 return <div>Загрузка weeks...</div>;
         } 
             else if (!groupsIsLoaded) {
                 return <div>Загрузка groups...</div>;
-          }
+        }
+            else if (!lessonsIsLoaded) {
+                return <div>Загрузка lessons...</div>;
+        }
             else {
                 return (
                     <div>
@@ -174,83 +205,133 @@ class App extends React.Component {
                     </div>
                         </div>
                         <div className="Schedule-wrapper">
-                            <div className="Schedule-row">
+                            <div className="Schedule-row" id="0">
                                 <div className="Schedule-cell" id="left">
                                 {this.state.selected_week} <br/> {this.state.selected_group}
                                 </div>
-                                {
-                                    days.map((day) => <div 
-                                    className="Schedule-cell" 
-                                    key={day.day}
-                                    >
-                                    {day.wday}<br />{day.day}
-                                    </div>)
-                                    }
+                                {days.map((day) => <div 
+                                className="Schedule-cell" 
+                                key={day.day}
+                                >
+                                {day.wday}<br />{day.day}
+                                </div>)
+                                }
                             </div>
-                            <div className="Schedule-row">
+                            <div className="Schedule-row" id="1">
                                 <div className="Schedule-cell" id="left"><span>
                                     <big>I</big> 8:<small>00</small> - 9:<small>35</small></span>
                                 </div>
-                                <div className="Schedule-cell">
-                                    Речевые практики (ПЗ)<br />
-                                    доц. С.В. Зотова<br />
-                                    (ауд.437)
-                    </div>
-                                <div className="Schedule-cell"></div>
-                                <div className="Schedule-cell"></div>
-                                <div className="Schedule-cell"></div>
-                                <div className="Schedule-cell"></div>
-                                <div className="Schedule-cell"></div>
+                                {/* TODO: make code below DRY */}
+                                {
+                                    days.map(day => 
+                                        <div className="Schedule-cell" key={"1" + day.day}>
+                                            {
+                                                lessons.find(lesson => lesson.date_day === day.date && lesson.class_number === '1' && lesson.study_group === this.state.selected_group) && 
+                                                <div>
+                                                    {lessons.find(lesson => lesson.date_day === day.date && lesson.class_number === '1' && lesson.study_group === this.state.selected_group)['subject']} <br/> 
+                                                    {lessons.find(lesson => lesson.date_day === day.date && lesson.class_number === '1' && lesson.study_group === this.state.selected_group)['speaker']} <br/>
+                                                    {lessons.find(lesson => lesson.date_day === day.date && lesson.class_number === '1' && lesson.study_group === this.state.selected_group)['classroom']}
+                                                </div>
+                                                
+                                            }
+                                        </div>
+                                    )
+                                }
                             </div>
-                            <div className="Schedule-row">
+                            <div className="Schedule-row" id="2">
                                 <div className="Schedule-cell" id="left"><span>
                                     <big>II</big> 9:<small>45</small> - 11:<small>20</small></span></div>
-                                <div className="Schedule-cell"></div>
-                                <div className="Schedule-cell"></div>
-                                <div className="Schedule-cell"></div>
-                                <div className="Schedule-cell"></div>
-                                <div className="Schedule-cell"></div>
-                                <div className="Schedule-cell"></div>
+                                    {
+                                    days.map(day => 
+                                        <div className="Schedule-cell" key={"2" + day.day}>
+                                            {
+                                                lessons.find(lesson => lesson.date_day === day.date && lesson.class_number === '2' && lesson.study_group === this.state.selected_group) && 
+                                                <div>
+                                                    {lessons.find(lesson => lesson.date_day === day.date && lesson.class_number === '2' && lesson.study_group === this.state.selected_group)['subject']} <br/> 
+                                                    {lessons.find(lesson => lesson.date_day === day.date && lesson.class_number === '2' && lesson.study_group === this.state.selected_group)['speaker']} <br/>
+                                                    {lessons.find(lesson => lesson.date_day === day.date && lesson.class_number === '2' && lesson.study_group === this.state.selected_group)['classroom']}
+                                                </div>
+                                                
+                                            }
+                                        </div>
+                                    )
+                                }
                             </div>
-                            <div className="Schedule-row">
+                            <div className="Schedule-row" id="3">
                                 <div className="Schedule-cell" id="left"><span>
                                     <big>III</big> 12:<small>00</small> - 13:<small>35</small></span></div>
-                                <div className="Schedule-cell"></div>
-                                <div className="Schedule-cell"></div>
-                                <div className="Schedule-cell"></div>
-                                <div className="Schedule-cell"></div>
-                                <div className="Schedule-cell"></div>
-                                <div className="Schedule-cell"></div>
+                                    {
+                                    days.map(day => 
+                                        <div className="Schedule-cell" key={"3" + day.day}>
+                                            {
+                                                lessons.find(lesson => lesson.date_day === day.date && lesson.class_number === '3' && lesson.study_group === this.state.selected_group) && 
+                                                <div>
+                                                    {lessons.find(lesson => lesson.date_day === day.date && lesson.class_number === '3' && lesson.study_group === this.state.selected_group)['subject']} <br/> 
+                                                    {lessons.find(lesson => lesson.date_day === day.date && lesson.class_number === '3' && lesson.study_group === this.state.selected_group)['speaker']} <br/>
+                                                    {lessons.find(lesson => lesson.date_day === day.date && lesson.class_number === '3' && lesson.study_group === this.state.selected_group)['classroom']}
+                                                </div>
+                                                
+                                            }
+                                        </div>
+                                    )
+                                }
                             </div>
-                            <div className="Schedule-row">
+                            <div className="Schedule-row" id="4">
                                 <div className="Schedule-cell" id="left"><span>
                                     <big>IV</big> 13:<small>45</small> - 15:<small>20</small></span></div>
-                                <div className="Schedule-cell"></div>
-                                <div className="Schedule-cell"></div>
-                                <div className="Schedule-cell"></div>
-                                <div className="Schedule-cell"></div>
-                                <div className="Schedule-cell"></div>
-                                <div className="Schedule-cell"></div>
+                                    {
+                                    days.map(day => 
+                                        <div className="Schedule-cell" key={"4" + day.day}>
+                                            {
+                                                lessons.find(lesson => lesson.date_day === day.date && lesson.class_number === '4' && lesson.study_group === this.state.selected_group) && 
+                                                <div>
+                                                    {lessons.find(lesson => lesson.date_day === day.date && lesson.class_number === '4' && lesson.study_group === this.state.selected_group)['subject']} <br/> 
+                                                    {lessons.find(lesson => lesson.date_day === day.date && lesson.class_number === '4' && lesson.study_group === this.state.selected_group)['speaker']} <br/>
+                                                    {lessons.find(lesson => lesson.date_day === day.date && lesson.class_number === '4' && lesson.study_group === this.state.selected_group)['classroom']}
+                                                </div>
+                                                
+                                            }
+                                        </div>
+                                    )
+                                }
                             </div>
-                            <div className="Schedule-row">
+                            <div className="Schedule-row" id="5">
                                 <div className="Schedule-cell" id="left"><span>
                                     <big>V</big> 15:<small>30</small> - 17:<small>05</small></span></div>
-                                <div className="Schedule-cell"></div>
-                                <div className="Schedule-cell"></div>
-                                <div className="Schedule-cell"></div>
-                                <div className="Schedule-cell"></div>
-                                <div className="Schedule-cell"></div>
-                                <div className="Schedule-cell"></div>
+                                    {
+                                    days.map(day => 
+                                        <div className="Schedule-cell" key={"5" + day.day}>
+                                            {
+                                                lessons.find(lesson => lesson.date_day === day.date && lesson.class_number === '5' && lesson.study_group === this.state.selected_group) && 
+                                                <div>
+                                                    {lessons.find(lesson => lesson.date_day === day.date && lesson.class_number === '5' && lesson.study_group === this.state.selected_group)['subject']} <br/> 
+                                                    {lessons.find(lesson => lesson.date_day === day.date && lesson.class_number === '5' && lesson.study_group === this.state.selected_group)['speaker']} <br/>
+                                                    {lessons.find(lesson => lesson.date_day === day.date && lesson.class_number === '5' && lesson.study_group === this.state.selected_group)['classroom']}
+                                                </div>
+                                                
+                                            }
+                                        </div>
+                                    )
+                                }
                             </div>
                             <div className="Schedule-row" id="bottom">
                                 <div className="Schedule-cell" id="left"><span>
                                     <big>VI</big> 17:<small>15</small> - 18:<small>50</small></span></div>
-                                <div className="Schedule-cell"></div>
-                                <div className="Schedule-cell"></div>
-                                <div className="Schedule-cell"></div>
-                                <div className="Schedule-cell"></div>
-                                <div className="Schedule-cell"></div>
-                                <div className="Schedule-cell"></div>
+                                    {
+                                    days.map(day => 
+                                        <div className="Schedule-cell" key={"6" + day.day}>
+                                            {
+                                                lessons.find(lesson => lesson.date_day === day.date && lesson.class_number === '6' && lesson.study_group === this.state.selected_group) && 
+                                                <div>
+                                                    {lessons.find(lesson => lesson.date_day === day.date && lesson.class_number === '6' && lesson.study_group === this.state.selected_group)['subject']} <br/> 
+                                                    {lessons.find(lesson => lesson.date_day === day.date && lesson.class_number === '6' && lesson.study_group === this.state.selected_group)['speaker']} <br/>
+                                                    {lessons.find(lesson => lesson.date_day === day.date && lesson.class_number === '6' && lesson.study_group === this.state.selected_group)['classroom']}
+                                                </div>
+                                                
+                                            }
+                                        </div>
+                                    )
+                                }
                             </div>
                         </div>
                         <div className="Footer">
