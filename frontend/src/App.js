@@ -112,7 +112,6 @@ class App extends React.Component {
         if (this.state.selected_week)  {
         let selected_week = this.state.weeks.find(week => week.week === this.state.selected_week);
         let next_week = this.state.weeks.find(week => week.id === selected_week.id + 1);
-        console.log(selected_week, next_week);
         next_week &&
         this.myRef.current.changeSelectedWeek(next_week.week);
         }
@@ -122,7 +121,6 @@ class App extends React.Component {
         if (this.state.selected_week)  {
         let selected_week = this.state.weeks.find(week => week.week === this.state.selected_week);
         let prev_week = this.state.weeks.find(week => week.id === selected_week.id - 1);
-        console.log(selected_week, prev_week);
         prev_week &&
         this.myRef.current.changeSelectedWeek(prev_week.week);
         }
@@ -130,7 +128,7 @@ class App extends React.Component {
 
     render() {
 
-        var days= [];
+        var days = [];
         var d;
         var wd;
         if (this.state.selected_week) {
@@ -173,12 +171,28 @@ class App extends React.Component {
                 });
             };
         }
-            
+        function getMonthsNames(days) {
+            let months = [];
+            let d1 = new Date(Date.parse(days[0]['date']));
+            let d2 = new Date(Date.parse(days[days.length - 1]['date']));
+            let m1 = d1.getMonth();
+            let m2 = d2.getMonth();
+            if (m1 === m2) 
+            months.push(d1.toLocaleDateString('RU-ru', {month: 'long'}))
+            else {
+            months.push(d1.toLocaleDateString('RU-ru', {month: 'short'}));
+            months.push(' - ');
+            months.push(d2.toLocaleDateString('RU-ru', {month: 'short'}));
+            }
+
+            return months;
+        }
+        var months = getMonthsNames(days);
         const {groups, weeks, lessons, groupsIsLoaded, weeksIsLoaded, lessonsIsLoaded, error_in_groups, error_in_weeks, error_in_lessons} = this.state;
         if (error_in_groups) {
             return <div>Ошибка: {error_in_groups.message} </div>;
         }
-            else if (error_in_weeks) {
+        else if (error_in_weeks) {
                 return <div>Ошибка: {error_in_weeks.message} </div>;
         }
             else if (error_in_lessons) {
@@ -213,8 +227,12 @@ class App extends React.Component {
                                 <button onClick={this.handleRightArrowClick}>&#62;</button>
                             </div>
                             <div className="Months">
-                                Октябрь 2019
-                    </div>
+                                {
+                                    months.map(month => 
+                                        month
+                                    )
+                                }   
+                            </div>
                             <div className="Dropdown">
                                 <DropdownGroups text="Группа" groups={groups} getGroupFromDropdown={this.getGroupFromDropdown}/>
                             </div>
