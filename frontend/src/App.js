@@ -27,6 +27,8 @@ class App extends React.Component {
         this.getWeekFromDropdown = this.getWeekFromDropdown.bind(this);
         this.handleTodayClick = this.handleTodayClick.bind(this);
         this.getGroupFromDropdown = this.getGroupFromDropdown.bind(this);
+        this.handleRightArrowClick = this.handleRightArrowClick.bind(this);
+        this.handleLeftArrowClick = this.handleLeftArrowClick.bind(this);
         this.myRef = React.createRef();
     }
     
@@ -40,8 +42,6 @@ class App extends React.Component {
 
     componentDidMount() {
         this.getDataFromAPI();
-        var days_array = [11, 12, 13, 14, 15, 16].map(i => i);
-        this.setState({days: days_array});
     }
     
     getDataFromAPI() {
@@ -96,6 +96,8 @@ class App extends React.Component {
                 });
             }
             );
+
+        
         }
 
     handleTodayClick() {
@@ -104,6 +106,26 @@ class App extends React.Component {
         this.myRef.current.changeSelectedWeek(current_week.week)
         :
         alert('Текущая неделя не найдена. Обратитесь к администратору.')
+    }
+    
+    handleRightArrowClick() {
+        if (this.state.selected_week)  {
+        let selected_week = this.state.weeks.find(week => week.week === this.state.selected_week);
+        let next_week = this.state.weeks.find(week => week.id === selected_week.id + 1);
+        console.log(selected_week, next_week);
+        next_week &&
+        this.myRef.current.changeSelectedWeek(next_week.week);
+        }
+    }
+
+    handleLeftArrowClick() {
+        if (this.state.selected_week)  {
+        let selected_week = this.state.weeks.find(week => week.week === this.state.selected_week);
+        let prev_week = this.state.weeks.find(week => week.id === selected_week.id - 1);
+        console.log(selected_week, prev_week);
+        prev_week &&
+        this.myRef.current.changeSelectedWeek(prev_week.week);
+        }
     }
 
     render() {
@@ -151,7 +173,7 @@ class App extends React.Component {
                 });
             };
         }
-
+            
         const {groups, weeks, lessons, groupsIsLoaded, weeksIsLoaded, lessonsIsLoaded, error_in_groups, error_in_weeks, error_in_lessons} = this.state;
         if (error_in_groups) {
             return <div>Ошибка: {error_in_groups.message} </div>;
@@ -171,7 +193,7 @@ class App extends React.Component {
             else if (!lessonsIsLoaded) {
                 return <div>Загрузка lessons...</div>;
         }
-            else {
+            else 
                 return (
                     <div>
                         <div className="Header">
@@ -185,10 +207,10 @@ class App extends React.Component {
                                 <button>Сегодня</button>
                             </div>
                             <div className="Arrow">
-                                <button>&#60;</button>
+                                <button onClick={this.handleLeftArrowClick}>&#60;</button>
                             </div>
                             <div className="Arrow">
-                                <button>&#62;</button>
+                                <button onClick={this.handleRightArrowClick}>&#62;</button>
                             </div>
                             <div className="Months">
                                 Октябрь 2019
@@ -341,5 +363,5 @@ class App extends React.Component {
         );
     }
 }
-}
+
 export default App;
