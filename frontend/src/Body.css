@@ -1,9 +1,10 @@
 .Schedule-wrapper{
 	display: flex;
-	/* border: 1px solid red; */
 	height: 86vh;
+	width: 98vw;
 	flex-direction: column;
 	justify-content: center;
+	align-self: center;
 }
 
 .Schedule-row{
@@ -16,17 +17,23 @@
 }
 
 .Schedule-cell{
+	display: flex;
 	flex-basis: 14%;
-	border-left: 3px solid #EDEFEE;
+	border-left: 1px solid #EDEFEE;
 	border-bottom: inherit;
 	max-width: 14%;
 	overflow-wrap: break-all;
-	font: "Roboto";
-	font-weight: 450;
-	font-size: 14px;
+	font-family: 'Roboto', sans-serif;
+	font-weight: 400;
+	font-size: 14.5px;
 	line-height: 21px;
-	padding: 5px;
+	padding: 10px;
 	overflow: auto;
+	flex-direction: row;
+}
+
+.Schedule-cell span{
+	margin-left:  5px;
 }
 
 .Schedule-cell#left{ 
@@ -34,7 +41,6 @@
 	flex-direction: column;
 	border-left: hidden;
 	justify-content: center;
-	align-content: center;
 }
 
 .Schedule-row#bottom{
@@ -58,3 +64,25 @@
     border-radius: 20px;
 }
 
+.Schedule-cell-content{
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	flex-basis: 100%;
+}
+
+.Lesson-subject{
+}
+
+.Lesson-speaker{
+	font-family: 'Roboto Slab', serif;
+	font-size: 13.5px;
+	margin-top: auto;
+	text-align: right;
+}
+
+.Lesson-classroom{
+	font-family: 'Roboto Slab', serif;
+	font-size: 13.5px;
+	text-align: right;
+}

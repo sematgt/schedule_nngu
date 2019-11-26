@@ -1,4 +1,5 @@
 import React from 'react';
+import './Main-wrapper.css';
 import './Body.css';
 import './Footer.css';
 import './Header.css';
@@ -209,7 +210,7 @@ class App extends React.Component {
         }
             else 
                 return (
-                    <div>
+                    <div className="Main-wrapper">
                         <div className="Header">
                             <div className="Hat">
                                 <span role="img" aria-label="Logo">🎓</span>
@@ -247,7 +248,6 @@ class App extends React.Component {
                         <div className="Schedule-wrapper">
                             <div className="Schedule-row" id="0">
                                 <div className="Schedule-cell" id="left">
-                                {this.state.selected_week} <br/> {this.state.selected_group}
                                 </div>
                                 {days.map((day) => <div 
                                 className="Schedule-cell" 
@@ -267,10 +267,16 @@ class App extends React.Component {
                                         <div className="Schedule-cell" key={"1" + day.day}>
                                             {
                                                 lessons.find(lesson => lesson.date_day === day.date && lesson.class_number === '1' && lesson.study_group === this.state.selected_group) && 
-                                                <div>
-                                                    {lessons.find(lesson => lesson.date_day === day.date && lesson.class_number === '1' && lesson.study_group === this.state.selected_group)['subject']} <br/> 
-                                                    {lessons.find(lesson => lesson.date_day === day.date && lesson.class_number === '1' && lesson.study_group === this.state.selected_group)['speaker']} <br/>
-                                                    {lessons.find(lesson => lesson.date_day === day.date && lesson.class_number === '1' && lesson.study_group === this.state.selected_group)['classroom']}
+                                                <div className="Schedule-cell-content">
+                                                    <div className="Lesson-subject">
+                                                        {lessons.find(lesson => lesson.date_day === day.date && lesson.class_number === '1' && lesson.study_group === this.state.selected_group)['subject']}  
+                                                    </div>
+                                                    <div className="Lesson-speaker">
+                                                        {lessons.find(lesson => lesson.date_day === day.date && lesson.class_number === '1' && lesson.study_group === this.state.selected_group)['speaker']} 
+                                                    </div>
+                                                    <div className="Lesson-classroom">
+                                                        {lessons.find(lesson => lesson.date_day === day.date && lesson.class_number === '1' && lesson.study_group === this.state.selected_group)['classroom']}
+                                                    </div>
                                                 </div>
                                                 
                                             }
