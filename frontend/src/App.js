@@ -189,6 +189,7 @@ class App extends React.Component {
             return months;
         }
         var months = getMonthsNames(days);
+        
         const {groups, weeks, lessons, groupsIsLoaded, weeksIsLoaded, lessonsIsLoaded, error_in_groups, error_in_weeks, error_in_lessons} = this.state;
         if (error_in_groups) {
             return <div>Ошибка: {error_in_groups.message} </div>;
@@ -261,27 +262,16 @@ class App extends React.Component {
                                 <div className="Schedule-cell" id="left"><span>
                                     <big>I</big> 8:<small>00</small> - 9:<small>35</small></span>
                                 </div>
-                                {/* TODO: make code below DRY */}
                                 {
                                     days.map(day => 
-                                        <div className="Schedule-cell" key={"1" + day.day}>
-                                            {
-                                                lessons.find(lesson => lesson.date_day === day.date && lesson.class_number === '1' && lesson.study_group === this.state.selected_group) && 
-                                                <div className="Schedule-cell-content">
-                                                    <div className="Lesson-subject">
-                                                        {lessons.find(lesson => lesson.date_day === day.date && lesson.class_number === '1' && lesson.study_group === this.state.selected_group)['subject']}  
-                                                    </div>
-                                                    <div className="Lesson-speaker">
-                                                        {lessons.find(lesson => lesson.date_day === day.date && lesson.class_number === '1' && lesson.study_group === this.state.selected_group)['speaker']} 
-                                                    </div>
-                                                    <div className="Lesson-classroom">
-                                                        {lessons.find(lesson => lesson.date_day === day.date && lesson.class_number === '1' && lesson.study_group === this.state.selected_group)['classroom']}
-                                                    </div>
-                                                </div>
-                                                
-                                            }
-                                        </div>
-                                    )
+                                        <ScheduleCellWithContent 
+                                            key={"1" + day.day}
+                                            class_number="1"
+                                            lessons={lessons}
+                                            day={day}
+                                            selected_group={this.state.selected_group}
+                                        />
+                                )    
                                 }
                             </div>
                             <div className="Schedule-row" id="2">
@@ -289,23 +279,13 @@ class App extends React.Component {
                                     <big>II</big> 9:<small>45</small> - 11:<small>20</small></span></div>
                                     {
                                     days.map(day => 
-                                        <div className="Schedule-cell" key={"2" + day.day}>
-                                            {
-                                                lessons.find(lesson => lesson.date_day === day.date && lesson.class_number === '2' && lesson.study_group === this.state.selected_group) && 
-                                                <div className="Schedule-cell-content">
-                                                    <div className="Lesson-subject">
-                                                        {lessons.find(lesson => lesson.date_day === day.date && lesson.class_number === '2' && lesson.study_group === this.state.selected_group)['subject']}  
-                                                    </div>
-                                                    <div className="Lesson-speaker">
-                                                        {lessons.find(lesson => lesson.date_day === day.date && lesson.class_number === '2' && lesson.study_group === this.state.selected_group)['speaker']} 
-                                                    </div>
-                                                    <div className="Lesson-classroom">
-                                                        {lessons.find(lesson => lesson.date_day === day.date && lesson.class_number === '2' && lesson.study_group === this.state.selected_group)['classroom']}
-                                                    </div>
-                                                </div>
-                                                
-                                            }
-                                        </div>
+                                        <ScheduleCellWithContent
+                                            key={"2" + day.day} 
+                                            class_number="2"
+                                            lessons={lessons}
+                                            day={day}
+                                            selected_group={this.state.selected_group}
+                                        />
                                     )
                                 }
                             </div>
@@ -314,23 +294,13 @@ class App extends React.Component {
                                     <big>III</big> 12:<small>00</small> - 13:<small>35</small></span></div>
                                     {
                                     days.map(day => 
-                                        <div className="Schedule-cell" key={"3" + day.day}>
-                                            {
-                                                lessons.find(lesson => lesson.date_day === day.date && lesson.class_number === '3' && lesson.study_group === this.state.selected_group) && 
-                                                <div className="Schedule-cell-content">
-                                                    <div className="Lesson-subject">
-                                                        {lessons.find(lesson => lesson.date_day === day.date && lesson.class_number === '3' && lesson.study_group === this.state.selected_group)['subject']}  
-                                                    </div>
-                                                    <div className="Lesson-speaker">
-                                                        {lessons.find(lesson => lesson.date_day === day.date && lesson.class_number === '3' && lesson.study_group === this.state.selected_group)['speaker']} 
-                                                    </div>
-                                                    <div className="Lesson-classroom">
-                                                        {lessons.find(lesson => lesson.date_day === day.date && lesson.class_number === '3' && lesson.study_group === this.state.selected_group)['classroom']}
-                                                    </div>
-                                                </div>
-                                                
-                                            }
-                                        </div>
+                                        <ScheduleCellWithContent
+                                            key={"3" + day.day} 
+                                            class_number="3"
+                                            lessons={lessons}
+                                            day={day}
+                                            selected_group={this.state.selected_group}
+                                        />
                                     )
                                 }
                             </div>
@@ -339,23 +309,13 @@ class App extends React.Component {
                                     <big>IV</big> 13:<small>45</small> - 15:<small>20</small></span></div>
                                     {
                                     days.map(day => 
-                                        <div className="Schedule-cell" key={"4" + day.day}>
-                                            {
-                                                lessons.find(lesson => lesson.date_day === day.date && lesson.class_number === '4' && lesson.study_group === this.state.selected_group) && 
-                                                <div className="Schedule-cell-content">
-                                                    <div className="Lesson-subject">
-                                                        {lessons.find(lesson => lesson.date_day === day.date && lesson.class_number === '4' && lesson.study_group === this.state.selected_group)['subject']}  
-                                                    </div>
-                                                    <div className="Lesson-speaker">
-                                                        {lessons.find(lesson => lesson.date_day === day.date && lesson.class_number === '4' && lesson.study_group === this.state.selected_group)['speaker']} 
-                                                    </div>
-                                                    <div className="Lesson-classroom">
-                                                        {lessons.find(lesson => lesson.date_day === day.date && lesson.class_number === '4' && lesson.study_group === this.state.selected_group)['classroom']}
-                                                    </div>
-                                                </div>
-                                                
-                                            }
-                                        </div>
+                                        <ScheduleCellWithContent
+                                            key={"4" + day.day} 
+                                            class_number="4"
+                                            lessons={lessons}
+                                            day={day}
+                                            selected_group={this.state.selected_group}
+                                        />
                                     )
                                 }
                             </div>
@@ -364,23 +324,13 @@ class App extends React.Component {
                                     <big>V</big> 15:<small>30</small> - 17:<small>05</small></span></div>
                                     {
                                     days.map(day => 
-                                        <div className="Schedule-cell" key={"5" + day.day}>
-                                            {
-                                                lessons.find(lesson => lesson.date_day === day.date && lesson.class_number === '5' && lesson.study_group === this.state.selected_group) && 
-                                                <div className="Schedule-cell-content">
-                                                    <div className="Lesson-subject">
-                                                        {lessons.find(lesson => lesson.date_day === day.date && lesson.class_number === '5' && lesson.study_group === this.state.selected_group)['subject']}  
-                                                    </div>
-                                                    <div className="Lesson-speaker">
-                                                        {lessons.find(lesson => lesson.date_day === day.date && lesson.class_number === '5' && lesson.study_group === this.state.selected_group)['speaker']} 
-                                                    </div>
-                                                    <div className="Lesson-classroom">
-                                                        {lessons.find(lesson => lesson.date_day === day.date && lesson.class_number === '5' && lesson.study_group === this.state.selected_group)['classroom']}
-                                                    </div>
-                                                </div>
-                                                
-                                            }
-                                        </div>
+                                        <ScheduleCellWithContent
+                                            key={"5" + day.day} 
+                                            class_number="5"
+                                            lessons={lessons}
+                                            day={day}
+                                            selected_group={this.state.selected_group}
+                                        />
                                     )
                                 }
                             </div>
@@ -416,6 +366,29 @@ class App extends React.Component {
                     </div>
         );
     }
+}
+
+function ScheduleCellWithContent(props) {
+    let lesson = props.lessons.find(lesson => lesson.date_day === props.day.date && lesson.class_number === props.class_number && lesson.study_group === props.selected_group)
+    return(
+            <div className="Schedule-cell" key={props.class_number + props.day.day}>
+                {
+                    lesson && 
+                    <div className="Schedule-cell-content">
+                        <div className="Lesson-subject">
+                            {lesson['subject']}  
+                        </div>
+                        <div className="Lesson-speaker">
+                            {lesson['speaker']} 
+                        </div>
+                        <div className="Lesson-classroom">
+                            {lesson['classroom']}
+                        </div>
+                    </div>
+                    
+                }
+            </div>
+    )
 }
 
 export default App;
