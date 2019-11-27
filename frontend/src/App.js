@@ -250,12 +250,12 @@ class App extends React.Component {
                             <div className="Schedule-row" id="0">
                                 <div className="Schedule-cell" id="left">
                                 </div>
-                                {days.map((day) => <div 
-                                className="Schedule-cell" 
-                                key={day.day}
-                                >
-                                {day.wday}<br />{day.day}
-                                </div>)
+                                {days.map((day) => 
+                                <ScheduleCellWithWeekDays 
+                                    day={day}
+                                    key={day.day}
+                                />
+                                )
                                 }
                             </div>
                             <div className="Schedule-row" id="1">
@@ -389,6 +389,26 @@ function ScheduleCellWithContent(props) {
                 }
             </div>
     )
+}
+
+function ScheduleCellWithWeekDays(props) {
+    let date = new Date();
+    let today = date.getDate();
+    return(
+            <div 
+            className={["Schedule-cell", props.day.day === today ? "Schedule-cell-weekday-today" : "Schedule-cell-weekday"].join(' ')} 
+            key={props.day.day}
+            >
+            <div className="wday">
+                {props.day.wday}
+            </div>
+            <div className="day">
+                {props.day.day}
+            </div>
+            </div>
+    )
+    
+
 }
 
 export default App;

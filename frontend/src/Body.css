@@ -86,3 +86,31 @@
 	font-size: 13.5px;
 	text-align: right;
 }
+
+.Schedule-cell-weekday{
+	display: flex;
+	flex-direction: column;
+	text-align: center;
+}
+
+.Schedule-cell-weekday-today{
+	display: flex;
+	flex-direction: column;
+	text-align: center;
+}
+
+.Schedule-cell-weekday .day{
+	/* border: 1px solid grey; */
+}
+
+.Schedule-cell-weekday .wday{
+	/* border: 1px solid steelblue; */
+}
+
+.Schedule-cell-weekday-today .day{
+
+}
+
+.Schedule-cell-weekday-today .wday{
+
+}
