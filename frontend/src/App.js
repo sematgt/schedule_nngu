@@ -400,10 +400,14 @@ function ScheduleCellWithWeekDays(props) {
             key={props.day.day}
             >
             <div className="wday">
+                <div>
                 {props.day.wday}
+                </div>
             </div>
             <div className="day">
+                <div>
                 {props.day.day}
+                </div>
             </div>
             </div>
     )

@@ -91,26 +91,44 @@
 	display: flex;
 	flex-direction: column;
 	text-align: center;
+	place-items: center;
 }
 
 .Schedule-cell-weekday-today{
 	display: flex;
 	flex-direction: column;
 	text-align: center;
+	place-items: center;
 }
 
 .Schedule-cell-weekday .day{
-	/* border: 1px solid grey; */
+	font-family: 'Open Sans', sans-serif;
+	font-size: 25px;
+	width: 46px;
+	height: 46px;
+	border-radius: 100%;
+	display: flex;
+	flex-direction: column;
+	place-content: center;
 }
 
 .Schedule-cell-weekday .wday{
-	/* border: 1px solid steelblue; */
+    font-weight: 500;
 }
 
 .Schedule-cell-weekday-today .day{
-
+	display: flex;
+	flex-direction: column;
+	place-content: center;
+	font-family: 'Open Sans', sans-serif;
+	font-size: 25px;
+	background: linear-gradient(to top left, rebeccapurple, navy);
+	width: 46px;
+	height: 46px;
+	border-radius: 100%;
+	color: white;
 }
 
 .Schedule-cell-weekday-today .wday{
-
+	font-weight: 500;
 }
