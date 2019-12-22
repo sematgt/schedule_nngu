@@ -10,9 +10,9 @@
     justify-content: center;
     flex-direction: column;
     display: flex;
-    font: "Roboto";
+    font-family: 'Roboto', sans-serif;
     font-size: 40px;
-    opacity: 76%;
+    opacity: 85%;
     padding-bottom: 6px;
     padding-left: 10px;
 }
@@ -21,10 +21,10 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    font: "Roboto";
+    font-family: 'Roboto', sans-serif;
     padding-bottom: 4px;
     font-size: 23px;
-    opacity: 92%;
+    opacity: 98%;
     font-weight: 400;
     overflow: visible;
     white-space: nowrap;
@@ -46,9 +46,11 @@
     height: 36px;
     background: white;
     border: 1px solid #A8ADA9;
-    font-family: "Roboto";
+    font-family: 'Roboto', sans-serif;
     font-size: 14px;
+    font-weight: 500;
     border-radius: 7px;
+    box-shadow: 0.3px 0.3px 1px grey;
 }
 
 .Header .Today-button button:hover{
@@ -86,18 +88,18 @@
 
 .Header .Months{
     display: flex;
-    flex-direction: column;
+    flex-basis: 150px;
     justify-content: center;
-    font: "Roboto";
+    align-items: center;
+    font-family: 'Roboto', sans-serif;
     padding-bottom: 4px;
     font-size: 23px;
-    opacity: 92%;
+    opacity: 98%;
     font-weight: 400;
     overflow: visible;
     white-space: nowrap;
-    margin-left: 15px;
-    margin-right: 15px;
     text-transform: capitalize;
+    margin-right: 10px;
 }
 
 .Header .Dropdown{
@@ -112,7 +114,7 @@
     background-color: white;
     border: 0;
     border-bottom: 1px solid #A8ADA9;
-    font-family: "Roboto";
+    font-family: 'Roboto', sans-serif;
     font-size: 14px;
     cursor: pointer;
 }
@@ -123,22 +125,23 @@
 
 .Header .Dropdown button span{
     font-size: 9px;
-    font-family: "Roboto";
+    font-family: 'Roboto', sans-serif;
 }
 
-/* @font-face{
-    font-family: 'Pixel Cyr';
-    src: local('Pixel Cyr'),
-    url('/frontend/public/3572.ttf');
-} */
 
 .Header .Nngu{
     display: flex;
-    flex-direction: column;
     justify-content: center;
-    font-family: "Pixel Cyr";
-    font-size: 23px;
-    opacity: 92%;
+    align-items: center;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 19px;
     margin-left: auto;
     margin-right: 20px;
+    color: #094069;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.Header .Nngu img{
+    margin-right: 10px;
 }

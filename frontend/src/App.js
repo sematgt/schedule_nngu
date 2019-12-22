@@ -229,11 +229,13 @@ class App extends React.Component {
                                 <button onClick={this.handleRightArrowClick}>&#62;</button>
                             </div>
                             <div className="Months">
+                                <div>
                                 {
                                     months.map(month => 
                                         month
                                     )
                                 }   
+                                </div>
                             </div>
                             <div className="Dropdown">
                                 <DropdownGroups text="Группа" groups={groups} getGroupFromDropdown={this.getGroupFromDropdown}/>
@@ -243,7 +245,10 @@ class App extends React.Component {
                                 <DropdownWeeks text="Неделя" weeks={weeks} getWeekFromDropdown={this.getWeekFromDropdown} ref={this.myRef} />
                             </div>
                             <div className="Nngu">
-                                Аф ННГУ им. Н.И. Лобачевского
+                                
+                                    <img src="logo_nngu.png" />
+                                    <div className="text">АФ ННГУ ИМ. Н.И. ЛОБАЧЕВСКОГО</div>
+                            
                     </div>
                         </div>
                         <div className="Schedule-wrapper">
@@ -361,7 +366,7 @@ class App extends React.Component {
                             </div>
                         </div>
                         <div className="Footer">
-                            <a href="https://github.com/sgbliznyuk"  target="_blank" rel="noopener noreferrer">© 2019 Simon B <span role="img" aria-label="Smile">🧐</span></a>
+                            <a href="https://github.com/sbliznyuk"  target="_blank" rel="noopener noreferrer">© 2019 Simon B <span role="img" aria-label="Smile">🧐</span></a>
                         </div>
                     </div>
         );
@@ -393,10 +398,9 @@ function ScheduleCellWithContent(props) {
 
 function ScheduleCellWithWeekDays(props) {
     let date = new Date();
-    let today = date.getDate();
-    return(
+    return( 
             <div 
-            className={["Schedule-cell", props.day.day === today ? "Schedule-cell-weekday-today" : "Schedule-cell-weekday"].join(' ')} 
+            className={["Schedule-cell", props.day.date === date.toISOString().slice(0,10) ? "Schedule-cell-weekday-today" : "Schedule-cell-weekday"].join(' ')} 
             key={props.day.day}
             >
             <div className="wday">
