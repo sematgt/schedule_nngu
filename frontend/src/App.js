@@ -246,7 +246,7 @@ class App extends React.Component {
                             </div>
                             <div className="Nngu">
                                 
-                                    <img src="logo_nngu.png" />
+                                    <img src="logo_nngu.png" alt="logo" />
                                     <div className="text">АФ ННГУ ИМ. Н.И. ЛОБАЧЕВСКОГО</div>
                             
                     </div>
@@ -381,13 +381,13 @@ function ScheduleCellWithContent(props) {
                     lesson && 
                     <div className="Schedule-cell-content">
                         <div className="Lesson-subject">
-                            {lesson['subject']}  
+                            {lesson['subject']['name']}  
                         </div>
                         <div className="Lesson-speaker">
                             {lesson['speaker']} 
                         </div>
                         <div className="Lesson-classroom">
-                            {lesson['classroom']}
+                        {lesson['subject']['subject_type']} {lesson['classroom']}
                         </div>
                     </div>
                     

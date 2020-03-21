@@ -1,13 +1,22 @@
 from rest_framework import serializers
 from schedule.models import *
 
+class SubjectSerializer(serializers.ModelSerializer):
+
+    subject_type = serializers.CharField(source='get_subject_type_display')
+
+    class Meta:
+        model = Subject
+        fields = ['name', 'subject_type']
+
 class LessonSerializer(serializers.ModelSerializer):
+
     class_number = serializers.StringRelatedField()
     study_group = serializers.StringRelatedField()
-    subject = serializers.StringRelatedField()
+    subject = SubjectSerializer()
     speaker = serializers.StringRelatedField()
     classroom = serializers.StringRelatedField()
-    
+
     class Meta:
         model = Lesson
         fields = ['id', '__str__', 'date_day', 'class_number', 'study_group', 'subject', 'speaker', 'classroom']

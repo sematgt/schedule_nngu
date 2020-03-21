@@ -17,7 +17,7 @@ class Speaker(models.Model):
         verbose_name_plural = 'Преподаватели'
 
 class Subject(models.Model):
-    name = models.CharField('Предмет', max_length=100, unique=True)
+    name = models.CharField('Предмет', max_length=100, unique=True, help_text='Название предмета')
     
     subject_type_choices = [
         ('Lecture', 'Лекция'),
@@ -31,7 +31,7 @@ class Subject(models.Model):
         choices=subject_type_choices, 
         default=None, 
         blank=True, 
-        null=True
+        null=True,
         )
 
     def __str__(self):
@@ -92,7 +92,6 @@ class Lesson(models.Model):
     class_number = models.IntegerField('Номер пары', choices=class_number_choices)
     study_group = models.ForeignKey(StudyGroup, verbose_name='Группа', on_delete=models.CASCADE)
     date_day = models.DateField(verbose_name='Дата занятия')
-
 
     def __str__(self):
         return str(self.subject) + ' ' + str(self.speaker) + ' ' + str(self.classroom)
