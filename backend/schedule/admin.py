@@ -21,7 +21,7 @@ class WeeksAdmin(admin.ModelAdmin):
 class SubjectAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'subject_type', 'load')
     list_display_links = ('name',)
-    list_editable = ('subject_type', 'load')
+    list_editable = ('load',)
     list_filter = ['subject_type']
     search_fields = ['name__icontains']
 

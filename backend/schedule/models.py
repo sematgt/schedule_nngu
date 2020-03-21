@@ -17,7 +17,7 @@ class Speaker(models.Model):
         verbose_name_plural = 'Преподаватели'
 
 class Subject(models.Model):
-    name = models.CharField('Предмет', max_length=100, unique=True, help_text='Название предмета')
+    name = models.CharField('Предмет', max_length=100, help_text='Название предмета')
     load = models.IntegerField('Нагрузка (часов в семестр)', blank=True, null=True)
 
     subject_type_choices = [
@@ -41,6 +41,7 @@ class Subject(models.Model):
     class Meta:
         verbose_name = 'Предмет'
         verbose_name_plural = 'Предметы'
+        unique_together = ['name', 'subject_type']
 
 class Classroom(models.Model):
     name = models.CharField('Аудитория', max_length=10, unique=True)
