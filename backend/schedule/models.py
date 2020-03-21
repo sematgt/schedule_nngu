@@ -18,6 +18,21 @@ class Speaker(models.Model):
 
 class Subject(models.Model):
     name = models.CharField('Предмет', max_length=100, unique=True)
+    
+    subject_type_choices = [
+        ('Lecture', 'Лекция'),
+        ('Practice', 'Практика'),
+        ('Lab', 'Лабораторная работа'),
+    ]
+
+    subject_type = models.CharField(
+        'Тип занятия', 
+        max_length=40, 
+        choices=subject_type_choices, 
+        default=None, 
+        blank=True, 
+        null=True
+        )
 
     def __str__(self):
         return self.name
@@ -112,11 +127,12 @@ class Lesson(models.Model):
 
 class Weeks(models.Model):
 
-    week = models.CharField(max_length=10)
-    current = models.BooleanField(default=False)
+    week = models.CharField('Неделя', max_length=10)
+    current = models.BooleanField('Текущая', default=False)
 
     class Meta:
-        verbose_name_plural = 'Weeks'
+        verbose_name = 'Неделя'
+        verbose_name_plural = 'Недели'
   
     def __str__(self):
         return str(self.week) + ' ' + str(self.current)

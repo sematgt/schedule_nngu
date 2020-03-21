@@ -366,7 +366,7 @@ class App extends React.Component {
                             </div>
                         </div>
                         <div className="Footer">
-                            <a href="https://github.com/sbliznyuk"  target="_blank" rel="noopener noreferrer">© 2019 Simon B <span role="img" aria-label="Smile">🧐</span></a>
+                            <a href="https://github.com/semaphore8"  target="_blank" rel="noopener noreferrer">© 2019 Semyon Bliznyuk <span role="img" aria-label="Smile">🧐</span></a>
                         </div>
                     </div>
         );
