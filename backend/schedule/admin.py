@@ -35,6 +35,8 @@ class ClassroomAdmin(admin.ModelAdmin):
     list_editable = ('size',)
     search_fields = ['name__icontains']
 
+# for r in [(Classroom, ClassroomAdmin), (StudyGroup, StudyGroupAdmin), (Lesson, LessonAdmin), (Speaker, SpeakerAdmin), (Weeks, WeeksAdmin), (Subject, SubjectAdmin)]:
+#     admin.site.register(r)
 admin.site.register(Classroom, ClassroomAdmin)
 admin.site.register(StudyGroup, StudyGroupAdmin)
 admin.site.register(Lesson, LessonAdmin)

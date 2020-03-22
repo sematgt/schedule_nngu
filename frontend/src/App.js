@@ -387,7 +387,7 @@ function ScheduleCellWithContent(props) {
                             {lesson['speaker']} 
                         </div>
                         <div className="Lesson-classroom">
-                        {lesson['subject']['subject_type']} {lesson['classroom']}
+                        {lesson['subject']['s_type']} {lesson['classroom']}
                         </div>
                     </div>
                     

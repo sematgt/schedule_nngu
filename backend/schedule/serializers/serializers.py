@@ -3,11 +3,11 @@ from schedule.models import *
 
 class SubjectSerializer(serializers.ModelSerializer):
 
-    subject_type = serializers.CharField(source='get_subject_type_display')
+    s_type = serializers.CharField(source='get_subject_type_display')
 
     class Meta:
         model = Subject
-        fields = ['name', 'subject_type']
+        fields = ['name', 's_type']
 
 class LessonSerializer(serializers.ModelSerializer):
 
