@@ -4,9 +4,15 @@ from .models import *
 
 
 class LessonAdmin(admin.ModelAdmin):
-    list_display = ('date_day', 'class_number', 'study_group', 'subject', 'speaker', 'classroom')
-    list_filter = ['date_day', 'study_group']
-    ordering = ['date_day']
+
+    def get_subject_type(self, obj):
+        return obj.subject.get_subject_type_display()
+    get_subject_type.short_description = 'Тип занятия'
+
+    list_display = ('subject', 'get_subject_type', 'study_group', 'date_day', 'class_number', 'speaker', 'classroom', 'week_parity', 'day')
+    list_display_links = ('subject',)
+    list_filter = ['date_day', 'study_group', 'week_parity', 'day']
+    ordering = ['-date_day']
     
 class SpeakerAdmin(admin.ModelAdmin):
     list_display = ('name', 'department', 'email', 'phone_number')
@@ -26,8 +32,8 @@ class SubjectAdmin(admin.ModelAdmin):
     search_fields = ['name__icontains']
 
 class StudyGroupAdmin(admin.ModelAdmin):
-    list_display = ('name', 'students_count')
-    list_editable = ('students_count',)
+    list_display = ('name', 'students_count', 'mode_of_study')
+    list_editable = ('students_count', 'mode_of_study')
     search_fields = ['name__icontains']
 
 class ClassroomAdmin(admin.ModelAdmin):
@@ -35,8 +41,7 @@ class ClassroomAdmin(admin.ModelAdmin):
     list_editable = ('size',)
     search_fields = ['name__icontains']
 
-# for r in [(Classroom, ClassroomAdmin), (StudyGroup, StudyGroupAdmin), (Lesson, LessonAdmin), (Speaker, SpeakerAdmin), (Weeks, WeeksAdmin), (Subject, SubjectAdmin)]:
-#     admin.site.register(r)
+
 admin.site.register(Classroom, ClassroomAdmin)
 admin.site.register(StudyGroup, StudyGroupAdmin)
 admin.site.register(Lesson, LessonAdmin)

@@ -58,6 +58,13 @@ class StudyGroup(models.Model):
     name = models.CharField('Группа', max_length=10, unique=True)
     students_count = models.IntegerField('Количество студентов', blank=True, null=True)
 
+    modes = [
+        ('fulltime', 'Дневная'),
+        ('distance', 'Заочная')
+    ]
+
+    mode_of_study = models.CharField('Форма обучения', max_length=20, choices=modes, blank=True, null=True)
+
     def __str__(self):
         return self.name
 
@@ -90,12 +97,28 @@ class Lesson(models.Model):
         (6, '6'),
     ]
 
+    parity = [
+        ('even', 'Четная'),
+        ('uneven', 'Нечетная')
+    ]
+
+    days = [
+        ('mon', 'пн'),
+        ('tue', 'вт'),
+        ('wed', 'ср'),
+        ('thu', 'чт'),
+        ('fri', 'пт'),
+        ('sat', 'сб'),
+    ]
+
     speaker = models.ForeignKey(Speaker, verbose_name='Преподаватель', on_delete=models.CASCADE)
     subject = models.ForeignKey(Subject, verbose_name='Предмет', on_delete=models.CASCADE)
     classroom = models.ForeignKey(Classroom, verbose_name='Аудитория', on_delete=models.CASCADE)
     class_number = models.IntegerField('Номер пары', choices=class_number_choices)
     study_group = models.ForeignKey(StudyGroup, verbose_name='Группа', on_delete=models.CASCADE)
-    date_day = models.DateField(verbose_name='Дата занятия')
+    date_day = models.DateField(verbose_name='Дата занятия', blank=True, null=True)
+    week_parity = models.CharField('Неделя', max_length=10, choices=parity, blank=True, null=True)
+    day = models.CharField('День', max_length=10, choices=days, blank=True, null=True)
 
     def __str__(self):
         return str(self.subject) + ' ' + str(self.speaker) + ' ' + str(self.classroom)
