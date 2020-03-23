@@ -60,7 +60,7 @@ ROOT_URLCONF = 'schedule_engine.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'schedule_engine' , 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -155,3 +155,5 @@ CORS_ALLOW_METHODS = [
 # date format in admin
 
 ru_formats.DATE_FORMAT = "Y-m-d"
+
+SELECT2_CSS = 'schedule/assets/css/select2.css'

@@ -9,7 +9,7 @@ class SubjectSerializer(serializers.ModelSerializer):
         model = Subject
         fields = ['name', 's_type']
 
-class LessonSerializer(serializers.ModelSerializer):
+class LessonFulltimeSerializer(serializers.ModelSerializer):
 
     class_number = serializers.StringRelatedField()
     study_group = serializers.StringRelatedField()
@@ -18,7 +18,7 @@ class LessonSerializer(serializers.ModelSerializer):
     classroom = serializers.StringRelatedField()
 
     class Meta:
-        model = Lesson
+        model = LessonFulltime
         fields = ['id', '__str__', 'date_day', 'class_number', 'study_group', 'subject', 'speaker', 'classroom']
       
 

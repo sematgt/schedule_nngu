@@ -36,7 +36,7 @@ class Subject(models.Model):
         )
 
     def __str__(self):
-        return self.name
+        return self.name + ' - ' + self.get_subject_type_display()
 
     class Meta:
         verbose_name = 'Предмет'
@@ -65,6 +65,12 @@ class StudyGroup(models.Model):
 
     mode_of_study = models.CharField('Форма обучения', max_length=20, choices=modes, blank=True, null=True)
 
+    def get_distance_group(self):
+        return self.objects.filter(modes__iexact='distance')
+    
+    def get_distance_group(self):
+        return self.objects.filter(modes__iexact='fulltime')
+
     def __str__(self):
         return self.name
 
@@ -84,7 +90,57 @@ class LessonQuerySet(models.QuerySet):
                 w.current=True
             w.save()
 
-class Lesson(models.Model):
+class LessonFulltime(models.Model):
+
+    objects = LessonQuerySet.as_manager()
+
+    class_number_choices = [
+        (1, '1'),
+        (2, '2'),
+        (3, '3'),
+        (4, '4'),
+        (5, '5'),
+        (6, '6'),
+    ]
+
+    speaker = models.ForeignKey(Speaker, verbose_name='Преподаватель', on_delete=models.CASCADE)
+    subject = models.ForeignKey(Subject, verbose_name='Предмет', on_delete=models.CASCADE)
+    classroom = models.ForeignKey(Classroom, verbose_name='Аудитория', on_delete=models.CASCADE)
+    class_number = models.IntegerField('Номер пары', choices=class_number_choices)
+    study_group = models.ForeignKey(StudyGroup, verbose_name='Группа', on_delete=models.CASCADE, limit_choices_to={'mode_of_study': 'fulltime'})
+    date_day = models.DateField(verbose_name='Дата занятия', blank=True, null=True)
+
+    def __str__(self):
+        return str(self.subject) + ' ' + str(self.speaker) + ' ' + str(self.classroom)
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        Weeks.objects.all().delete()
+        first_days_list = GetFirstDaysOfAllWeeks(GetLessonsIn3Months())
+        for day in first_days_list:
+            w = Weeks.objects.create(week=day)
+            if datetime.strptime(day, '%Y-%m-%d').date().strftime('%Y-%m-%d') == GetFirstDaysOfAllWeeks([date.today().strftime('%Y-%m-%d')])[0]:
+                w.current=True
+            w.save()
+
+
+    def delete(self, *args, **kwargs):
+        super().delete(*args, **kwargs)
+        Weeks.objects.all().delete()
+        first_days_list = GetFirstDaysOfAllWeeks(GetLessonsIn3Months())
+        for day in first_days_list:
+            w = Weeks.objects.create(week=day)
+            if datetime.strptime(day, '%Y-%m-%d').date().strftime('%Y-%m-%d') == GetFirstDaysOfAllWeeks([date.today().strftime('%Y-%m-%d')])[0]:
+                w.current=True
+            w.save()
+
+    class Meta:
+        verbose_name = 'Занятие дневное'
+        verbose_name_plural = 'Занятия дневные'
+        unique_together = ['class_number', 'study_group', 'date_day']
+        ordering = ['date_day']
+
+class LessonDistance(models.Model):
 
     objects = LessonQuerySet.as_manager()
 
@@ -115,40 +171,18 @@ class Lesson(models.Model):
     subject = models.ForeignKey(Subject, verbose_name='Предмет', on_delete=models.CASCADE)
     classroom = models.ForeignKey(Classroom, verbose_name='Аудитория', on_delete=models.CASCADE)
     class_number = models.IntegerField('Номер пары', choices=class_number_choices)
-    study_group = models.ForeignKey(StudyGroup, verbose_name='Группа', on_delete=models.CASCADE)
-    date_day = models.DateField(verbose_name='Дата занятия', blank=True, null=True)
+    study_group = models.ForeignKey(StudyGroup, verbose_name='Группа', on_delete=models.CASCADE, limit_choices_to={'mode_of_study': 'distance'})
     week_parity = models.CharField('Неделя', max_length=10, choices=parity, blank=True, null=True)
     day = models.CharField('День', max_length=10, choices=days, blank=True, null=True)
 
     def __str__(self):
         return str(self.subject) + ' ' + str(self.speaker) + ' ' + str(self.classroom)
 
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
-        Weeks.objects.all().delete()
-        first_days_list = GetFirstDaysOfAllWeeks(GetLessonsIn3Months())
-        for day in first_days_list:
-            w = Weeks.objects.create(week=day)
-            if datetime.strptime(day, '%Y-%m-%d').date().strftime('%Y-%m-%d') == GetFirstDaysOfAllWeeks([date.today().strftime('%Y-%m-%d')])[0]:
-                w.current=True
-            w.save()
-
-
-    def delete(self, *args, **kwargs):
-        super().delete(*args, **kwargs)
-        Weeks.objects.all().delete()
-        first_days_list = GetFirstDaysOfAllWeeks(GetLessonsIn3Months())
-        for day in first_days_list:
-            w = Weeks.objects.create(week=day)
-            if datetime.strptime(day, '%Y-%m-%d').date().strftime('%Y-%m-%d') == GetFirstDaysOfAllWeeks([date.today().strftime('%Y-%m-%d')])[0]:
-                w.current=True
-            w.save()
-
     class Meta:
-        verbose_name = 'Занятие'
-        verbose_name_plural = 'Занятия'
-        unique_together = ['class_number', 'study_group', 'date_day']
-        ordering = ['date_day']
+        verbose_name = 'Занятие заочное'
+        verbose_name_plural = 'Занятия заочные'
+        unique_together = ['class_number', 'study_group', 'week_parity' , 'day']
+        ordering = ['day']
 
 
 class Weeks(models.Model):
