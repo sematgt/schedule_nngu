@@ -1,3 +1,5 @@
+// returns current week number
+
 const getWeekNumber = () => {
     let now = new Date();
     let onejan = new Date(now.getFullYear(), 0, 1);

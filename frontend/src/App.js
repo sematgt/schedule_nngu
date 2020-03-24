@@ -7,7 +7,8 @@ import DropdownGroups from './Components/DropdownGroups';
 import DropdownWeeks from './Components/DropdownWeeks';
 import Switch from './Components/Switch';
 import getWeekNumber from './Utils/GetWeekNumber';
-
+import getMonthsNames from './Utils/GetMonthsNames';
+import getWeeksDays from './Utils/GetWeeksDays'
 
 class App extends React.Component {
 
@@ -202,248 +203,174 @@ class App extends React.Component {
     }
 
     render() {
-        console.log('selected_group - ', this.state.selected_group)
-        console.log('selected_group_fulltime - ', this.state.selected_group_fulltime)
-        var days = [];
-        var d;
-        var wd;
-        if (this.state.selected_week && this.state.study_mode === 'distance') {
-            d = new Date(Date.parse(this.state.selected_week));
-            wd = d.toLocaleDateString('RU-ru', { weekday: 'short' });
-            days.push({
-                wday: wd,
-                day: d.getDate(),
-                date: d.toISOString().slice(0,10),
-            });
-            for (let i=0; i<5; i++) {
-                d.setDate(d.getDate()+1)
-                wd = d.toLocaleDateString('RU-ru', { weekday: 'short' });
-                days.push({
-                    wday: wd,
-                    day: d.getDate(),
-                    date: d.toISOString().slice(0,10),
-                });
-            };
-        }
-        else {
-            d = new Date();
-            if (d.getDay() !== 0) 
-            d.setDate(d.getDate()-(d.getDay()-1))
-            else
-            d.setDate(d.getDate()-6);
-            wd = d.toLocaleDateString('RU-ru', { weekday: 'short' });
-            days.push({
-                wday: wd,
-                day: d.getDate(),
-                date: d.toISOString().slice(0,10),
-            });
-            for (let i=0; i<5; i++) {
-                d.setDate(d.getDate()+1);
-                wd = d.toLocaleDateString('RU-ru', { weekday: 'short' });
-                days.push({
-                    wday: wd,
-                    day: d.getDate(),
-                    date: d.toISOString().slice(0,10),
-                });
-            };
-        }
-        function getMonthsNames(days) {
-            let months = [];
-            let d1 = new Date(Date.parse(days[0]['date']));
-            let d2 = new Date(Date.parse(days[days.length - 1]['date']));
-            let m1 = d1.getMonth();
-            let m2 = d2.getMonth();
-            if (m1 === m2) 
-            months.push(d1.toLocaleDateString('RU-ru', {month: 'long'}))
-            else {
-            months.push(d1.toLocaleDateString('RU-ru', {month: 'short'}));
-            months.push(' - ');
-            months.push(d2.toLocaleDateString('RU-ru', {month: 'short'}));
-            }
-
-            return months;
-        }
-        var months = getMonthsNames(days);
-        
+        var days = getWeeksDays(this.state.selected_week, this.state.study_mode); // get an array with day's numbers, weekdays and dates 
+        var months = getMonthsNames(days); // get an array with months spelling names ['February'] or ['Feb.', '-', 'Mar.']
         const {groups_distance, groups_fulltime, weeks, lessons_distance, lessons_fulltime, groupsIsLoaded, weeksIsLoaded, lessons_distanceIsLoaded, lessons_fulltimeIsLoaded, error_in_groups, error_in_weeks, error_in_lessons_distance, error_in_lessons_fulltime, study_mode} = this.state;
-        if (error_in_groups) {
-            return <div>Ошибка: {error_in_groups.message} </div>;
+        
+        // check for errors
+        for (var l of [weeksIsLoaded, groupsIsLoaded, lessons_distanceIsLoaded, lessons_fulltimeIsLoaded]) {
+            if (l === false) {
+                return <div>Загрузка...</div>;
+            }
         }
-        else if (error_in_weeks) {
-            return <div>Ошибка: {error_in_weeks.message} </div>;
+        
+        for (var e of [error_in_groups, error_in_weeks, error_in_lessons_distance, error_in_lessons_fulltime]) {
+            if (e != null) {
+                return <div>Ошибка: {e.message} </div>;
+            }
         }
-        else if (error_in_lessons_distance) {
-            return <div>Ошибка: {error_in_lessons_distance.message} </div>;
-        }
-        else if (error_in_lessons_fulltime) {
-            return <div>Ошибка: {error_in_lessons_fulltime.message} </div>;
-        }
-        else if (!weeksIsLoaded) {
-            return <div>Загрузка weeks...</div>;
-        } 
-        else if (!groupsIsLoaded) {
-            return <div>Загрузка groups...</div>;
-        }
-        else if (!lessons_distanceIsLoaded) {
-            return <div>Загрузка lessons_distance...</div>;
-        }
-        else if (!lessons_fulltimeIsLoaded) {
-            return <div>Загрузка lessons_fulltime...</div>;
-        }
-            else 
-                return (
-                    <div className="Main-wrapper">
-                        <div className="Header">
-                            <div className="Hat">
-                                <span role="img" aria-label="Logo">🎓</span>
-                            </div>
-                            <div className="Title">
-                                Расписание
+        
+        // render
+        return (
+            <div className="Main-wrapper">
+                <div className="Header">
+                    <div className="Hat">
+                        <span role="img" aria-label="Logo">🎓</span>
                     </div>
-                            <div className="Switch">
-                                <Switch getStudyModeFromSwitch={this.getStudyModeFromSwitch}/>
-                            </div>
-                            <div className="Today-button" onClick={this.handleTodayClick}>
-                                <button>Сегодня</button>
-                            </div>
-                            <div className="Arrow">
-                                <button onClick={this.handleLeftArrowClick}>&#60;</button>
-                            </div>
-                            <div className="Arrow">
-                                <button onClick={this.handleRightArrowClick}>&#62;</button>
-                            </div>
-                            <div className="Months">
-                                <div>
-                                {
-                                    months.map(month => 
-                                        month
-                                    )
-                                }   
-                                </div>
-                            </div>
-                            <div className="Dropdown">
-                                        <DropdownGroups text="Группа" groups_distance={groups_distance} groups_fulltime={groups_fulltime} getGroupFromDropdown={this.getGroupFromDropdown} study_mode={study_mode}/>
-                            </div>
-
-                            <div className="Dropdown">
-                                <DropdownWeeks text="Неделя" weeks={weeks} weeks_fulltime={this.weeks_fulltime} getWeekFromDropdown={this.getWeekFromDropdown} getWeekFromDropdownFulltime={this.getWeekFromDropdownFulltime} ref={this.myRef} study_mode={study_mode} />
-                            </div>
-                            <div className="Nngu">
-                                
-                                    <img src="logo_nngu.png" alt="logo" />
-                                    <div className="text">АФ ННГУ ИМ. Н.И. ЛОБАЧЕВСКОГО</div>
-                            
+                    <div className="Title">
+                        Расписание
                     </div>
+                    <div className="Switch">
+                        <Switch getStudyModeFromSwitch={this.getStudyModeFromSwitch}/>
+                    </div>
+                    <div className="Today-button" onClick={this.handleTodayClick}>
+                        <button>Сегодня</button>
+                    </div>
+                    <div className="Arrow">
+                        <button onClick={this.handleLeftArrowClick}>&#60;</button>
+                    </div>
+                    <div className="Arrow">
+                        <button onClick={this.handleRightArrowClick}>&#62;</button>
+                    </div>
+                    <div className="Months">
+                        <div>
+                            {
+                                months.map(month => 
+                                    month
+                                )
+                            }   
                         </div>
-                        <div className="Schedule-wrapper">
-                            <div className="Schedule-row" id="0">
-                                <div className="Schedule-cell" id="left">
-                                </div>
-                                {days.map((day) => 
+                    </div>
+                    <div className="Dropdown">
+                        <DropdownGroups text="Группа" groups_distance={groups_distance} groups_fulltime={groups_fulltime} getGroupFromDropdown={this.getGroupFromDropdown} study_mode={study_mode}/>
+                    </div>
+                    <div className="Dropdown">
+                        <DropdownWeeks text="Неделя" weeks={weeks} weeks_fulltime={this.weeks_fulltime} getWeekFromDropdown={this.getWeekFromDropdown} getWeekFromDropdownFulltime={this.getWeekFromDropdownFulltime} ref={this.myRef} study_mode={study_mode} />
+                    </div>
+                    <div className="Nngu">
+                        <img src="logo_nngu.png" alt="logo" />
+                        <div className="text">АФ ННГУ ИМ. Н.И. ЛОБАЧЕВСКОГО</div>
+                    </div>
+                </div>
+                <div className="Schedule-wrapper">
+                    <div className="Schedule-row" id="0">
+                        <div className="Schedule-cell" id="left">
+                        </div>
+                            {days.map((day) => 
                                 <ScheduleCellWithWeekDays 
                                     day={day}
                                     key={day.day}
                                 />
-                                )
-                                }
-                            </div>
-                            <div className="Schedule-row" id="1">
-                                <div className="Schedule-cell" id="left"><span>
-                                    <big>I</big> 8:<small>00</small> - 9:<small>35</small></span>
-                                </div>
-                                {
-                                    days.map(day => 
-                                        <ScheduleCellWithContent 
-                                            key={"1" + day.day}
-                                            class_number="1"
-                                            lessons={lessons_distance}
-                                            day={day}
-                                            selected_group={this.state.selected_group}
-                                        />
-                                )    
-                                }
-                            </div>
-                            <div className="Schedule-row" id="2">
-                                <div className="Schedule-cell" id="left"><span>
-                                    <big>II</big> 9:<small>45</small> - 11:<small>20</small></span></div>
-                                    {
-                                    days.map(day => 
-                                        <ScheduleCellWithContent
-                                            key={"2" + day.day} 
-                                            class_number="2"
-                                            lessons={lessons_distance}
-                                            day={day}
-                                            selected_group={this.state.selected_group}
-                                        />
-                                    )
-                                }
-                            </div>
-                            <div className="Schedule-row" id="3">
-                                <div className="Schedule-cell" id="left"><span>
-                                    <big>III</big> 12:<small>00</small> - 13:<small>35</small></span></div>
-                                    {
-                                    days.map(day => 
-                                        <ScheduleCellWithContent
-                                            key={"3" + day.day} 
-                                            class_number="3"
-                                            lessons={lessons_distance}
-                                            day={day}
-                                            selected_group={this.state.selected_group}
-                                        />
-                                    )
-                                }
-                            </div>
-                            <div className="Schedule-row" id="4">
-                                <div className="Schedule-cell" id="left"><span>
-                                    <big>IV</big> 13:<small>45</small> - 15:<small>20</small></span></div>
-                                    {
-                                    days.map(day => 
-                                        <ScheduleCellWithContent
-                                            key={"4" + day.day} 
-                                            class_number="4"
-                                            lessons={lessons_distance}
-                                            day={day}
-                                            selected_group={this.state.selected_group}
-                                        />
-                                    )
-                                }
-                            </div>
-                            <div className="Schedule-row" id="5">
-                                <div className="Schedule-cell" id="left"><span>
-                                    <big>V</big> 15:<small>30</small> - 17:<small>05</small></span></div>
-                                    {
-                                    days.map(day => 
-                                        <ScheduleCellWithContent
-                                            key={"5" + day.day} 
-                                            class_number="5"
-                                            lessons={lessons_distance}
-                                            day={day}
-                                            selected_group={this.state.selected_group}
-                                        />
-                                    )
-                                }
-                            </div>
-                            <div className="Schedule-row" id="bottom">
-                                <div className="Schedule-cell" id="left"><span>
-                                    <big>VI</big> 17:<small>15</small> - 18:<small>50</small></span></div>
-                                    {
-                                        days.map(day => 
-                                        <ScheduleCellWithContent
-                                            key={"6" + day.day} 
-                                            class_number="6"
-                                            lessons={lessons_distance}
-                                            day={day}
-                                            selected_group={this.state.selected_group}
-                                        />
-                                    )
-                                }
-                            </div>
-                        </div>
-                        <div className="Footer">
-                            <a href="https://github.com/semaphore8"  target="_blank" rel="noopener noreferrer">© 2019 Semyon Bliznyuk <span role="img" aria-label="Smile">🧐</span></a>
-                        </div>
+                            )
+                            }
                     </div>
-        );
+                    <div className="Schedule-row" id="1">
+                        <div className="Schedule-cell" id="left"><span>
+                            <big>I</big> 8:<small>00</small> - 9:<small>35</small></span>
+                        </div>
+                        {
+                            days.map(day => 
+                                <ScheduleCellWithContent 
+                                    key={"1" + day.day}
+                                    class_number="1"
+                                    lessons={lessons_distance}
+                                    day={day}
+                                    selected_group={this.state.selected_group}
+                                />
+                        )    
+                        }
+                    </div>
+                    <div className="Schedule-row" id="2">
+                        <div className="Schedule-cell" id="left"><span>
+                            <big>II</big> 9:<small>45</small> - 11:<small>20</small></span></div>
+                            {
+                            days.map(day => 
+                                <ScheduleCellWithContent
+                                    key={"2" + day.day} 
+                                    class_number="2"
+                                    lessons={lessons_distance}
+                                    day={day}
+                                    selected_group={this.state.selected_group}
+                                />
+                            )
+                        }
+                    </div>
+                    <div className="Schedule-row" id="3">
+                        <div className="Schedule-cell" id="left"><span>
+                            <big>III</big> 12:<small>00</small> - 13:<small>35</small></span></div>
+                            {
+                            days.map(day => 
+                                <ScheduleCellWithContent
+                                    key={"3" + day.day} 
+                                    class_number="3"
+                                    lessons={lessons_distance}
+                                    day={day}
+                                    selected_group={this.state.selected_group}
+                                />
+                            )
+                        }
+                    </div>
+                    <div className="Schedule-row" id="4">
+                        <div className="Schedule-cell" id="left"><span>
+                            <big>IV</big> 13:<small>45</small> - 15:<small>20</small></span></div>
+                            {
+                            days.map(day => 
+                                <ScheduleCellWithContent
+                                    key={"4" + day.day} 
+                                    class_number="4"
+                                    lessons={lessons_distance}
+                                    day={day}
+                                    selected_group={this.state.selected_group}
+                                />
+                            )
+                        }
+                    </div>
+                    <div className="Schedule-row" id="5">
+                        <div className="Schedule-cell" id="left"><span>
+                            <big>V</big> 15:<small>30</small> - 17:<small>05</small></span></div>
+                            {
+                            days.map(day => 
+                                <ScheduleCellWithContent
+                                    key={"5" + day.day} 
+                                    class_number="5"
+                                    lessons={lessons_distance}
+                                    day={day}
+                                    selected_group={this.state.selected_group}
+                                />
+                            )
+                        }
+                    </div>
+                    <div className="Schedule-row" id="bottom">
+                        <div className="Schedule-cell" id="left"><span>
+                            <big>VI</big> 17:<small>15</small> - 18:<small>50</small></span></div>
+                            {
+                                days.map(day => 
+                                <ScheduleCellWithContent
+                                    key={"6" + day.day} 
+                                    class_number="6"
+                                    lessons={lessons_distance}
+                                    day={day}
+                                    selected_group={this.state.selected_group}
+                                />
+                            )
+                        }
+                    </div>
+                </div>
+                <div className="Footer">
+                    <a href="https://github.com/semaphore8"  target="_blank" rel="noopener noreferrer">© 2019 Semyon Bliznyuk <span role="img" aria-label="Smile">🧐</span></a>
+                </div>
+            </div>
+    );
     }
 }
 
