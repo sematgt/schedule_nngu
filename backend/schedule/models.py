@@ -107,7 +107,7 @@ class LessonDistance(models.Model):
     subject = models.ForeignKey(Subject, verbose_name='Предмет', on_delete=models.CASCADE)
     classroom = models.ForeignKey(Classroom, verbose_name='Аудитория', on_delete=models.CASCADE)
     class_number = models.IntegerField('Номер пары', choices=class_number_choices)
-    study_group = models.ForeignKey(StudyGroup, verbose_name='Группа', on_delete=models.CASCADE, limit_choices_to={'mode_of_study': 'fulltime'})
+    study_group = models.ForeignKey(StudyGroup, verbose_name='Группа', on_delete=models.CASCADE, limit_choices_to={'mode_of_study': 'distance'})
     date_day = models.DateField(verbose_name='Дата занятия', blank=True, null=True)
 
     def __str__(self):
@@ -172,7 +172,7 @@ class LessonFulltime(models.Model):
     subject = models.ForeignKey(Subject, verbose_name='Предмет', on_delete=models.CASCADE)
     classroom = models.ForeignKey(Classroom, verbose_name='Аудитория', on_delete=models.CASCADE)
     class_number = models.IntegerField('Номер пары', choices=class_number_choices)
-    study_group = models.ForeignKey(StudyGroup, verbose_name='Группа', on_delete=models.CASCADE, limit_choices_to={'mode_of_study': 'distance'})
+    study_group = models.ForeignKey(StudyGroup, verbose_name='Группа', on_delete=models.CASCADE, limit_choices_to={'mode_of_study': 'fulltime'})
     week_parity = models.CharField('Неделя', max_length=10, choices=parity, blank=True, null=True)
     day = models.CharField('День', max_length=10, choices=days, blank=True, null=True)
 
