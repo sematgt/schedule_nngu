@@ -106,7 +106,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    /* flex-basis: 180px; */
     font-family: 'Roboto', sans-serif;
     font-size: 15px;
 }

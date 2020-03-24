@@ -73,9 +73,6 @@
 	flex-basis: 100%;
 }
 
-.Lesson-subject{
-}
-
 .Lesson-speaker{
 	font-family: 'Roboto Slab', serif;
 	font-size: 13.5px;
@@ -120,13 +117,28 @@
 	font-weight: 500;
 }
 
+.Schedule-cell-weekday .wday_big{
+	display: flex;
+	flex-direction: column;
+	place-content: center;
+	font-family: 'Roboto', sans-serif;
+	font-size: 25px;
+	font-weight: 400;
+	width: 46px;
+	height: 46px;
+	margin-top: 21px;
+	min-width: 46px;
+	min-height: 46px;
+	border-radius: 100%;
+}
+
 .Schedule-cell-weekday-today .day{
 	display: flex;
 	flex-direction: column;
 	place-content: center;
-	font-family: 'Open Sans', sans-serif;
+	font-family: 'Roboto', sans-serif;
 	font-size: 25px;
-	background: linear-gradient(to top left, rebeccapurple, navy);
+	background: linear-gradient(to top left, #3f51b5, #3b4ba7);
 	width: 46px;
 	height: 46px;
 	min-width: 46px;
@@ -137,4 +149,21 @@
 
 .Schedule-cell-weekday-today .wday{
 	font-weight: 500;
+}
+
+.Schedule-cell-weekday-today .wday_big{
+	display: flex;
+	margin-top: 21px;
+	flex-direction: column;
+	place-content: center;
+	font-family: 'Roboto', sans-serif;
+	font-size: 25px;
+	font-weight: 500;
+	background: linear-gradient(to top left, #3f51b5, #3b4ba7);
+	width: 46px;
+	height: 46px;
+	min-width: 46px;
+	min-height: 46px;
+	border-radius: 100%;
+	color: white;
 }
