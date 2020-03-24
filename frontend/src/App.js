@@ -11,6 +11,7 @@ import getMonthsNames from './Utils/GetMonthsNames';
 import getWeeksDays from './Utils/GetWeeksDays'
 import ScheduleRowWithContent from './Components/Body/ScheduleRowWithContent'
 import ScheduleCellWithWeekDays from './Components/Body/ScheduleCellWithWeekDays'
+import { ApiURI, class_timetable } from './Utils/AppConfig'
 
 class App extends React.Component {
 
@@ -40,26 +41,6 @@ class App extends React.Component {
                 {parity: 'Чётная', value: 'even'},
                 {parity: 'Нечётная', value: 'uneven'},
             ];
-        this.class_timetable = [
-            {
-                id: '1', roman: 'I', begin: '8:00', end: '9:35'
-            },
-            {
-                id: '2', roman: 'II', begin: '9:45', end: '11:20'
-            },
-            {
-                id: '3', roman: 'III', begin: '12:00', end: '13:35'
-            },
-            {
-                id: '4', roman: 'IV', begin: '13:45', end: '15:20'
-            },
-            {
-                id: '5', roman: 'V', begin: '15:30', end: '17:05'
-            },
-            {
-                id: '6', roman: 'VI', begin: '17:15', end: '18:50'
-            },
-        ]
         this.getDataFromAPI = this.getDataFromAPI.bind(this);
         this.getWeekFromDropdown = this.getWeekFromDropdown.bind(this);
         this.getWeekFromDropdownFulltime = this.getWeekFromDropdownFulltime.bind(this);
@@ -100,7 +81,7 @@ class App extends React.Component {
     }
     
     getDataFromAPI() {
-        fetch('http://localhost:5000/groups/')
+        fetch(ApiURI + '/groups/')
         .then(response => response.json())
         .then(
             (result) => {
@@ -118,7 +99,7 @@ class App extends React.Component {
             }
             );
             
-        fetch('http://localhost:5000/weeks/')
+        fetch(ApiURI + '/weeks/')
         .then(response => response.json())
         .then(
             (result) => {
@@ -136,7 +117,7 @@ class App extends React.Component {
             );
         
     
-        fetch('http://localhost:5000/lessons_distance/')
+        fetch(ApiURI + '/lessons_distance/')
         .then(response => response.json())
         .then(
             (result) => {
@@ -153,7 +134,7 @@ class App extends React.Component {
             }
             );
 
-        fetch('http://localhost:5000/lessons_fulltime/')
+        fetch(ApiURI + '/lessons_fulltime/')
         .then(response => response.json())
         .then(
             (result) => {
@@ -298,7 +279,7 @@ class App extends React.Component {
                             }
                     </div>
                     {
-                        this.class_timetable.map(t => 
+                        class_timetable.map(t => 
                             <ScheduleRowWithContent 
                                 key={t.id}
                                 row_number={t.id}
