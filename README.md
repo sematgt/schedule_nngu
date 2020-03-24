@@ -4,13 +4,11 @@ Django + React university schedule single page application for students with ded
 
 ![frontend](./previews/frontend_preview.png)
 
-![backend](./previews/backend_preview.png)
-
 This app is provided to manage Full-time and Distance study mode classes and groups. You can change the mode by toggling the switch in front of the page.
 
 Then in dropdowns you can choose the study group and the week.
 
-Finally you can switch weeks by toggling arrow pointers and also jump to current date by clicking a "Today" button (the only one button in UI with some cyrillic text 🙂).
+Finally you can switch weeks by toggling arrow buttons and also jump to current date by clicking a "Today" button (the only one button in UI with some cyrillic text 🙂).
 
 ## Run
 

@@ -9,8 +9,10 @@ class DropdownWeeks extends React.Component{
     super(props);
     this.state = {
       selected_week: '',
+      selected_week_fulltime: '',
     }
     this.handleChange = this.handleChange.bind(this);
+    this.handleChangeFulltime = this.handleChangeFulltime.bind(this);
     this.changeSelectedWeek = this.changeSelectedWeek.bind(this);
   }
   
@@ -20,12 +22,26 @@ class DropdownWeeks extends React.Component{
     });
     this.props.getWeekFromDropdown(event.target.value);
   };
+
+  handleChangeFulltime(event) {
+    this.setState({
+      selected_week_fulltime: event.target.value,
+    });
+    this.props.getWeekFromDropdownFulltime(event.target.value);
+  };
   
   changeSelectedWeek(week) {
     this.setState({
       selected_week: week,
     });
     this.props.getWeekFromDropdown(week);
+  }
+
+  changeSelectedWeekFulltime(week) {
+    this.setState({
+      selected_week_fulltime: week,
+    });
+    this.props.getWeekFromDropdownFulltime(week);
   }
   
   render() {
@@ -46,27 +62,52 @@ class DropdownWeeks extends React.Component{
     return (
       <div>
       <FormControl>
-        <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          value={this.state.selected_week}
-          onChange={this.handleChange}
-          displayEmpty 
-          style={selectStyle}
-        >
-        <MenuItem value="" style={menuItemStyle}>
-            <em>Неделя</em>
-        </MenuItem>
-        {this.props.weeks.map((week) => (
-          <MenuItem 
-          value={week.week} 
-          key={week.week}
-          style={menuItemStyle}
-          >{week.week}</MenuItem>
-          ))
+        {
+          this.props.study_mode === 'distance' &&
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={this.state.selected_week}
+              onChange={this.handleChange}
+              displayEmpty 
+              style={selectStyle}
+            >
+            <MenuItem value="" style={menuItemStyle}>
+                <em>Неделя</em>
+            </MenuItem>
+            {this.props.weeks.map((week) => (
+              <MenuItem 
+              value={week.week} 
+              key={week.week}
+              style={menuItemStyle}
+              >{week.week}</MenuItem>
+              ))
+            }
+            </Select>
         }
-        )
-        </Select>
+        {
+          this.props.study_mode === 'fulltime' &&
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={this.state.selected_week_fulltime}
+              onChange={this.handleChangeFulltime}
+              displayEmpty 
+              style={selectStyle}
+            >
+            <MenuItem value="" style={menuItemStyle}>
+                <em>Неделя</em>
+            </MenuItem>
+            {this.props.weeks_fulltime.map((week) => (
+              <MenuItem 
+              value={week.value} 
+              key={week.value}
+              style={menuItemStyle}
+              >{week.parity}</MenuItem>
+              ))
+            }
+            </Select>
+        }
       </FormControl>
       </div>
     );

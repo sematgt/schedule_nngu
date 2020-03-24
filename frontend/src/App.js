@@ -27,11 +27,17 @@ class App extends React.Component {
             error_in_lessons_distance: null,
             error_in_lessons_fulltime: null,
             selected_week: '',
+            selected_week_fulltime: '',
             selected_group: '',
             study_mode: 'distance',
         };
+        this.weeks_fulltime = [
+                {parity: 'Чётная', value: 'even'},
+                {parity: 'Нечётная', value: 'uneven'},
+            ];
         this.getDataFromAPI = this.getDataFromAPI.bind(this);
         this.getWeekFromDropdown = this.getWeekFromDropdown.bind(this);
+        this.getWeekFromDropdownFulltime = this.getWeekFromDropdownFulltime.bind(this);
         this.handleTodayClick = this.handleTodayClick.bind(this);
         this.getGroupFromDropdown = this.getGroupFromDropdown.bind(this);
         this.handleRightArrowClick = this.handleRightArrowClick.bind(this);
@@ -51,6 +57,10 @@ class App extends React.Component {
 
     getWeekFromDropdown(selected_week) {
         this.setState({selected_week: selected_week})
+    }
+
+    getWeekFromDropdownFulltime(selected_week) {
+        this.setState({selected_week_fulltime: selected_week})
     }
     
     getGroupFromDropdown(selected_group) {
@@ -136,37 +146,61 @@ class App extends React.Component {
         }
 
     handleTodayClick() {
-        let current_week = this.state.weeks.find((week) => week.current);
-        current_week ?
-        this.myRef.current.changeSelectedWeek(current_week.week)
-        :
-        alert('Текущая неделя не найдена. Обратитесь к администратору.')
+        if (this.state.study_mode === 'distance') {
+            let current_week = this.state.weeks.find((week) => week.current);
+            current_week ?
+            this.myRef.current.changeSelectedWeek(current_week.week)
+            :
+            alert('Текущая неделя не найдена. Обратитесь к администратору.')
+        } else if (this.state.study_mode === 'fulltime') {
+            this.myRef.current.changeSelectedWeekFulltime(!this.state.selected_week_fulltime) // TODO
+        }
     }
     
     handleRightArrowClick() {
-        if (this.state.selected_week)  {
-        let selected_week = this.state.weeks.find(week => week.week === this.state.selected_week);
-        let next_week = this.state.weeks.find(week => week.id === selected_week.id + 1);
-        next_week &&
-        this.myRef.current.changeSelectedWeek(next_week.week);
-        }
+        if (this.state.study_mode === 'distance') {
+            if (this.state.selected_week)  {
+            let selected_week = this.state.weeks.find(week => week.week === this.state.selected_week);
+            let next_week = this.state.weeks.find(week => week.id === selected_week.id + 1);
+            next_week &&
+            this.myRef.current.changeSelectedWeek(next_week.week);
+            }
+        } else if (this.state.study_mode === 'fulltime') {
+            if (this.state.selected_week_fulltime === 'even') {
+                this.myRef.current.changeSelectedWeekFulltime('uneven');
+            } else if (this.state.selected_week_fulltime === 'uneven') {
+                this.myRef.current.changeSelectedWeekFulltime('even');
+            }
+        } 
     }
+    
 
     handleLeftArrowClick() {
-        if (this.state.selected_week)  {
-        let selected_week = this.state.weeks.find(week => week.week === this.state.selected_week);
-        let prev_week = this.state.weeks.find(week => week.id === selected_week.id - 1);
-        prev_week &&
-        this.myRef.current.changeSelectedWeek(prev_week.week);
-        }
+        if (this.state.study_mode === 'distance') {
+            if (this.state.selected_week)  {
+            let selected_week = this.state.weeks.find(week => week.week === this.state.selected_week);
+            let prev_week = this.state.weeks.find(week => week.id === selected_week.id - 1);
+            prev_week &&
+            this.myRef.current.changeSelectedWeek(prev_week.week);
+            }
+        } else if (this.state.study_mode === 'fulltime') {
+            if (this.state.selected_week_fulltime === 'even') {
+                this.myRef.current.changeSelectedWeekFulltime('uneven');
+            } else if (this.state.selected_week_fulltime === 'uneven') {
+                this.myRef.current.changeSelectedWeekFulltime('even');
+            }
+        } 
     }
 
     render() {
-        // console.log('study mode in render - ', this.state.study_mode)
+        console.log('study mode in render - ', this.state.study_mode)
+        console.log('selected_week in render - ', this.state.selected_week)
+        console.log('selected_week_fulltime in render - ', this.state.selected_week_fulltime)
+        console.log('weeks_fulltime in render - ', this.weeks_fulltime)
         var days = [];
         var d;
         var wd;
-        if (this.state.selected_week) {
+        if (this.state.selected_week && this.state.study_mode === 'distance') {
             d = new Date(Date.parse(this.state.selected_week));
             wd = d.toLocaleDateString('RU-ru', { weekday: 'short' });
             days.push({
@@ -292,7 +326,7 @@ class App extends React.Component {
                             </div>
 
                             <div className="Dropdown">
-                                <DropdownWeeks text="Неделя" weeks={weeks} getWeekFromDropdown={this.getWeekFromDropdown} ref={this.myRef} />
+                                <DropdownWeeks text="Неделя" weeks={weeks} weeks_fulltime={this.weeks_fulltime} getWeekFromDropdown={this.getWeekFromDropdown} getWeekFromDropdownFulltime={this.getWeekFromDropdownFulltime} ref={this.myRef} study_mode={study_mode} />
                             </div>
                             <div className="Nngu">
                                 
