@@ -38,7 +38,7 @@ class StudyGroupSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = StudyGroup
-        fields = ['name']
+        fields = ['name', 'mode_of_study']
 
 
 class WeeksSerializer(serializers.ModelSerializer):

@@ -12,15 +12,19 @@ class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            groups: [],
+            groups_distance: [],
+            groups_fulltime: [],
             weeks: [],
-            lessons: [],
+            lessons_distance: [],
+            lessons_fulltime: [],
             groupsIsLoaded: false,
             weeksIsLoaded: false,
-            lessonsIsLoaded: false,
+            lessons_distanceIsLoaded: false,
+            lessons_fulltimeIsLoaded: false,
             error_in_groups: null,
             error_in_weeks: null,
-            error_in_lessons: null,
+            error_in_lessons_distance: null,
+            error_in_lessons_fulltime: null,
             selected_week: '',
             selected_group: '',
         };
@@ -51,7 +55,8 @@ class App extends React.Component {
         .then(
             (result) => {
                 this.setState({
-                    groups: result,
+                    groups_distance: result.filter(group => group.mode_of_study === 'distance'),
+                    groups_fulltime: result.filter(group => group.mode_of_study === 'fulltime'),
                     groupsIsLoaded: true,
                 });
             },
@@ -81,19 +86,36 @@ class App extends React.Component {
             );
         
     
-        fetch('http://localhost:5000/lessons/')
+        fetch('http://localhost:5000/lessons_distance/')
         .then(response => response.json())
         .then(
             (result) => {
                 this.setState({
-                    lessons: result,
-                    lessonsIsLoaded: true,
+                    lessons_distance: result,
+                    lessons_distanceIsLoaded: true,
                 });
             },
-            (error_in_lessons) => {
+            (error_in_lessons_distance) => {
                 this.setState({
-                    lessonsIsLoaded: true,
-                    error_in_lessons
+                    lessons_distanceIsLoaded: true,
+                    error_in_lessons_distance
+                });
+            }
+            );
+
+        fetch('http://localhost:5000/lessons_fulltime/')
+        .then(response => response.json())
+        .then(
+            (result) => {
+                this.setState({
+                    lessons_fulltime: result,
+                    lessons_fulltimeIsLoaded: true,
+                });
+            },
+            (error_in_lessons_fulltime) => {
+                this.setState({
+                    lessons_fulltimeIsLoaded: true,
+                    error_in_lessons_fulltime
                 });
             }
             );
@@ -190,24 +212,30 @@ class App extends React.Component {
         }
         var months = getMonthsNames(days);
         
-        const {groups, weeks, lessons, groupsIsLoaded, weeksIsLoaded, lessonsIsLoaded, error_in_groups, error_in_weeks, error_in_lessons} = this.state;
+        const {groups_distance, groups_fulltime, weeks, lessons_distance, lessons_fulltime, groupsIsLoaded, weeksIsLoaded, lessons_distanceIsLoaded, lessons_fulltimeIsLoaded, error_in_groups, error_in_weeks, error_in_lessons_distance, error_in_lessons_fulltime} = this.state;
         if (error_in_groups) {
             return <div>Ошибка: {error_in_groups.message} </div>;
         }
         else if (error_in_weeks) {
-                return <div>Ошибка: {error_in_weeks.message} </div>;
+            return <div>Ошибка: {error_in_weeks.message} </div>;
         }
-            else if (error_in_lessons) {
-                return <div>Ошибка: {error_in_lessons.message} </div>;
+        else if (error_in_lessons_distance) {
+            return <div>Ошибка: {error_in_lessons_distance.message} </div>;
         }
-            else if (!weeksIsLoaded) {
-                return <div>Загрузка weeks...</div>;
+        else if (error_in_lessons_fulltime) {
+            return <div>Ошибка: {error_in_lessons_fulltime.message} </div>;
+        }
+        else if (!weeksIsLoaded) {
+            return <div>Загрузка weeks...</div>;
         } 
-            else if (!groupsIsLoaded) {
-                return <div>Загрузка groups...</div>;
+        else if (!groupsIsLoaded) {
+            return <div>Загрузка groups...</div>;
         }
-            else if (!lessonsIsLoaded) {
-                return <div>Загрузка lessons...</div>;
+        else if (!lessons_distanceIsLoaded) {
+            return <div>Загрузка lessons_distance...</div>;
+        }
+        else if (!lessons_fulltimeIsLoaded) {
+            return <div>Загрузка lessons_fulltime...</div>;
         }
             else 
                 return (
@@ -238,7 +266,7 @@ class App extends React.Component {
                                 </div>
                             </div>
                             <div className="Dropdown">
-                                <DropdownGroups text="Группа" groups={groups} getGroupFromDropdown={this.getGroupFromDropdown}/>
+                                <DropdownGroups text="Группа" groups={groups_distance} getGroupFromDropdown={this.getGroupFromDropdown}/>
                             </div>
 
                             <div className="Dropdown">
@@ -272,7 +300,7 @@ class App extends React.Component {
                                         <ScheduleCellWithContent 
                                             key={"1" + day.day}
                                             class_number="1"
-                                            lessons={lessons}
+                                            lessons={lessons_distance}
                                             day={day}
                                             selected_group={this.state.selected_group}
                                         />
@@ -287,7 +315,7 @@ class App extends React.Component {
                                         <ScheduleCellWithContent
                                             key={"2" + day.day} 
                                             class_number="2"
-                                            lessons={lessons}
+                                            lessons={lessons_distance}
                                             day={day}
                                             selected_group={this.state.selected_group}
                                         />
@@ -302,7 +330,7 @@ class App extends React.Component {
                                         <ScheduleCellWithContent
                                             key={"3" + day.day} 
                                             class_number="3"
-                                            lessons={lessons}
+                                            lessons={lessons_distance}
                                             day={day}
                                             selected_group={this.state.selected_group}
                                         />
@@ -317,7 +345,7 @@ class App extends React.Component {
                                         <ScheduleCellWithContent
                                             key={"4" + day.day} 
                                             class_number="4"
-                                            lessons={lessons}
+                                            lessons={lessons_distance}
                                             day={day}
                                             selected_group={this.state.selected_group}
                                         />
@@ -332,7 +360,7 @@ class App extends React.Component {
                                         <ScheduleCellWithContent
                                             key={"5" + day.day} 
                                             class_number="5"
-                                            lessons={lessons}
+                                            lessons={lessons_distance}
                                             day={day}
                                             selected_group={this.state.selected_group}
                                         />
@@ -343,24 +371,14 @@ class App extends React.Component {
                                 <div className="Schedule-cell" id="left"><span>
                                     <big>VI</big> 17:<small>15</small> - 18:<small>50</small></span></div>
                                     {
-                                    days.map(day => 
-                                        <div className="Schedule-cell" key={"6" + day.day}>
-                                            {
-                                                lessons.find(lesson => lesson.date_day === day.date && lesson.class_number === '6' && lesson.study_group === this.state.selected_group) && 
-                                                <div className="Schedule-cell-content">
-                                                    <div className="Lesson-subject">
-                                                        {lessons.find(lesson => lesson.date_day === day.date && lesson.class_number === '6' && lesson.study_group === this.state.selected_group)['subject']}  
-                                                    </div>
-                                                    <div className="Lesson-speaker">
-                                                        {lessons.find(lesson => lesson.date_day === day.date && lesson.class_number === '6' && lesson.study_group === this.state.selected_group)['speaker']} 
-                                                    </div>
-                                                    <div className="Lesson-classroom">
-                                                        {lessons.find(lesson => lesson.date_day === day.date && lesson.class_number === '6' && lesson.study_group === this.state.selected_group)['classroom']}
-                                                    </div>
-                                                </div>
-                                                
-                                            }
-                                        </div>
+                                        days.map(day => 
+                                        <ScheduleCellWithContent
+                                            key={"6" + day.day} 
+                                            class_number="6"
+                                            lessons={lessons_distance}
+                                            day={day}
+                                            selected_group={this.state.selected_group}
+                                        />
                                     )
                                 }
                             </div>
