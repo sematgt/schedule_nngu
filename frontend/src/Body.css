@@ -147,6 +147,10 @@
 	color: white;
 }
 
+.day_text {
+	padding-top: 2px;
+}
+
 .Schedule-cell-weekday-today .wday{
 	font-weight: 500;
 }
@@ -166,4 +170,8 @@
 	min-height: 46px;
 	border-radius: 100%;
 	color: white;
+}
+
+.wday_big_text{
+	padding-bottom: 3px;
 }
