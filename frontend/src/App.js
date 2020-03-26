@@ -198,7 +198,6 @@ class App extends React.Component {
 
     render() {
         var days = getWeeksDays(this.state.selected_week, this.state.study_mode); // get an array with day's numbers, weekdays and dates 
-        console.log(days)
         var months = getMonthsNames(days); // get an array with months spelling names ['February'] or ['Feb.', '-', 'Mar.']
         const {groups_distance, groups_fulltime, weeks, lessons_distance, lessons_fulltime, groupsIsLoaded, weeksIsLoaded, lessons_distanceIsLoaded, lessons_fulltimeIsLoaded, error_in_groups, error_in_weeks, error_in_lessons_distance, error_in_lessons_fulltime, study_mode, selected_group, selected_week_fulltime, selected_group_fulltime} = this.state;
         
