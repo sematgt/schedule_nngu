@@ -4,13 +4,14 @@ import './Footer.css';
 import './Header.css';
 import DropdownGroups from '../Components/Navigation/DropdownGroups';
 import DropdownWeeks from '../Components/Navigation/DropdownWeeks';
-import Switch from '../Components/Navigation/WeeksSwitch';
+import WeeksSwitch from '../Components/Navigation/WeeksSwitch';
 import getWeekNumber from '../Utils/GetWeekNumber';
 import getMonthsNames from '../Utils/GetMonthsNames';
-import getWeeksDays from '../Utils/GetWeeksDays'
-import ScheduleRowWithContent from '../Components/Body/ScheduleRowWithContent'
-import ScheduleCellWithWeekDays from '../Components/Body/ScheduleCellWithWeekDays'
-import { ApiURI, class_timetable } from '../Utils/AppConfig'
+import getWeeksDays from '../Utils/GetWeeksDays';
+import ScheduleRowWithContent from '../Components/Body/ScheduleRowWithContent';
+import ScheduleCellWithWeekDays from '../Components/Body/ScheduleCellWithWeekDays';
+import { ApiURI, class_timetable } from '../Utils/AppConfig';
+
 
 class App extends React.Component {
 
@@ -223,7 +224,7 @@ class App extends React.Component {
                         Расписание
                     </div>
                     <div className="Switch">
-                        <Switch getStudyModeFromSwitch={this.getStudyModeFromSwitch}/>
+                        <WeeksSwitch getStudyModeFromSwitch={this.getStudyModeFromSwitch}/>
                     </div>
                     <div className="Today-button" onClick={this.handleTodayClick}>
                         <button>Сегодня</button>
@@ -285,7 +286,7 @@ class App extends React.Component {
                     }
                 </div>
                 <div className="Footer">
-                    <a href="https://github.com/semaphore8"  target="_blank" rel="noopener noreferrer">© 2019 Semyon Bliznyuk <span role="img" aria-label="Smile">🧐</span></a>
+                    <a href="https://github.com/semaphore8"  target="_blank" rel="noopener noreferrer">© 2019 S. Bliznyuk <span role="img" aria-label="Smile">🧐</span></a>
                 </div>
             </div>
     );
