@@ -10,7 +10,7 @@ import getMonthsNames from '../Utils/GetMonthsNames';
 import getWeeksDays from '../Utils/GetWeeksDays';
 import ScheduleRowWithContent from '../Components/Body/ScheduleRowWithContent';
 import ScheduleCellWithWeekDays from '../Components/Body/ScheduleCellWithWeekDays';
-import { ApiURI, class_timetable } from '../Utils/AppConfig';
+import { ApiURI, class_timetable } from '../AppConfig';
 
 
 class App extends React.Component {
