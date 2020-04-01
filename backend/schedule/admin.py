@@ -8,15 +8,13 @@ class LessonDistanceAdmin(admin.ModelAdmin):
     #     return obj.subject.get_subject_type_display()
     # get_subject_type.short_description = 'Тип занятия'
 
-    fields = ['subject', 'study_group', 'date_day', 'class_number']
+    fields = ['subject', 'speaker', 'study_group', 'date_day', 'class_number', 'classroom']
     autocomplete_fields = ['subject']
     list_display = ('subject', 'study_group', 'date_day', 'class_number', 'speaker', 'classroom')
     list_display_links = ('subject',)
     list_filter = ['date_day', 'study_group']
     ordering = ['-date_day', 'study_group', 'class_number']
 
-    class Media:
-        js = ('admin/js/jquery.init.js', 'js/LessonsDistanceAdmin.js')
     
 class LessonFulltimeAdmin(admin.ModelAdmin):
 
