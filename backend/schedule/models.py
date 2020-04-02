@@ -270,6 +270,11 @@ class LessonFulltime(models.Model):
         ('Sat', 'сб'),
     ]
 
+    term_choices = [
+        ('1', '1'),
+        ('2', '2'),
+    ]
+
     speaker = models.ForeignKey(Speaker, verbose_name='Преподаватель', on_delete=models.CASCADE)
     subject = models.ForeignKey(Subject, verbose_name='Предмет', on_delete=models.CASCADE)
     classroom = models.ForeignKey(Classroom, verbose_name='Аудитория', on_delete=models.CASCADE)
@@ -277,6 +282,7 @@ class LessonFulltime(models.Model):
     study_group = models.ForeignKey(StudyGroup, verbose_name='Группа', on_delete=models.CASCADE, limit_choices_to={'mode_of_study': 'fulltime'})
     week_parity = models.CharField('Неделя', max_length=10, choices=parity, blank=True, null=True)
     day = models.CharField('День', max_length=10, choices=days, blank=True, null=True)
+    term = models.CharField(verbose_name='Семестр', max_length=2, blank=True, null=True, choices=term_choices)
 
     def __str__(self):
         return str(self.subject) + ' ' + str(self.speaker) + ' ' + str(self.classroom)

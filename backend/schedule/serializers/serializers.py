@@ -19,7 +19,7 @@ class LessonFulltimeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = LessonFulltime
-        fields = ['id', '__str__', 'week_parity' , 'day', 'class_number', 'study_group', 'subject', 'speaker', 'classroom']
+        fields = ['id', '__str__', 'week_parity' , 'day', 'class_number', 'study_group', 'subject', 'speaker', 'classroom', 'term']
 
 class LessonDistanceSerializer(serializers.ModelSerializer):
 

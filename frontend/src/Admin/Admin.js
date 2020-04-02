@@ -110,9 +110,12 @@ export default function Admin() {
         if (choosenGroup.mode_of_study === 'fulltime') {
             const fetchData = async () => {
                 const result = await fetch(ApiURI + '/lessons_fulltime/')
-                .then(response => response.json());
-
-                setLessons(result);
+                .then(response => response.json())
+                .then(result => {
+                    setLessons(
+                        result.filter(lesson => lesson.term === choosenTerm.number)
+                    )
+                });
                 };
                 fetchData();
             };
@@ -168,6 +171,7 @@ export default function Admin() {
                 lessons={lessons}
                 loads={loads}
                 choosenTerm={choosenTerm}
+                study_mode={choosenGroup.mode_of_study}
              />
         </div>
     )

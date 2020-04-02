@@ -34,8 +34,8 @@ export default function SimpleTable(props) {
                         </TableCell>
                         <TableCell align="right">{load.hours_count}</TableCell>
                         <TableCell align="right">{props.lessons.filter(lesson => lesson.subject.name === load.subject_name.name && lesson.subject.s_type === load.subject_name.s_type).length*2}</TableCell>
-                        <TableCell align="right">{load.hours_count/props.choosenTerm.weeks_count_distance}</TableCell>
-                        <TableCell align="right">{load.hours_count/(props.choosenTerm.weeks_count_distance*2)}</TableCell>
+                        <TableCell align="right">{props.study_mode === 'distance' ? load.hours_count/props.choosenTerm.weeks_count_distance : load.hours_count/props.choosenTerm.weeks_count_fulltime}</TableCell>
+                        <TableCell align="right">{props.study_mode === 'distance' ? load.hours_count/(props.choosenTerm.weeks_count_distance*2) : load.hours_count/(props.choosenTerm.weeks_count_fulltime*2)}</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>

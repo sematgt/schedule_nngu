@@ -24,10 +24,11 @@ class LessonFulltimeAdmin(admin.ModelAdmin):
     # get_subject_type.short_description = 'Тип занятия'
 
     autocomplete_fields = ['subject', 'speaker']
-    list_display = ('subject', 'study_group', 'class_number', 'speaker', 'classroom', 'week_parity', 'day')
+    list_display = ('subject', 'study_group', 'class_number', 'speaker', 'classroom', 'week_parity', 'day', 'term')
     list_display_links = ('subject',)
-    list_filter = ['study_group', 'week_parity', 'day']
+    list_filter = ['study_group', 'week_parity', 'day', 'term']
     ordering = ['day', 'week_parity', 'study_group', 'class_number']
+    list_editable = ('term',)
     
 class SpeakerAdmin(admin.ModelAdmin):
     list_display = ('name', 'department', 'email', 'phone_number')
