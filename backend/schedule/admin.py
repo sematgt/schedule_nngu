@@ -8,11 +8,12 @@ class LessonDistanceAdmin(admin.ModelAdmin):
     #     return obj.subject.get_subject_type_display()
     # get_subject_type.short_description = 'Тип занятия'
 
-    fields = ['subject', 'speaker', 'study_group', 'date_day', 'class_number', 'classroom']
+    fields = ['subject', 'speaker', 'study_group', 'date_day', 'class_number', 'classroom', 'term']
     autocomplete_fields = ['subject']
-    list_display = ('subject', 'study_group', 'date_day', 'class_number', 'speaker', 'classroom')
+    list_display = ('subject', 'study_group', 'date_day', 'class_number', 'speaker', 'classroom', 'term')
+    list_editable = ('term',)
     list_display_links = ('subject',)
-    list_filter = ['date_day', 'study_group']
+    list_filter = ['date_day', 'study_group', 'term']
     ordering = ['-date_day', 'study_group', 'class_number']
 
     

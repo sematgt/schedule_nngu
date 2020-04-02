@@ -31,7 +31,7 @@ class LessonDistanceSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = LessonDistance
-        fields = ['id', '__str__', 'date_day', 'class_number', 'study_group', 'subject', 'speaker', 'classroom']
+        fields = ['id', '__str__', 'date_day', 'class_number', 'study_group', 'subject', 'speaker', 'classroom', 'term']
 
 
 class StudyGroupSerializer(serializers.ModelSerializer):

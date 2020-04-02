@@ -13,7 +13,7 @@ export default function Admin() {
     const loadTitles = [
         'Предмет', 
         'Количество часов', 
-        'Часов запланировано', 
+        'Часов в расписании', 
         'Часов в неделю', 
         'Пар в неделю'
     ]
@@ -97,9 +97,12 @@ export default function Admin() {
         if (choosenGroup.mode_of_study === 'distance') {
             const fetchData = async () => {
                 const result = await fetch(ApiURI + '/lessons_distance/')
-                .then(response => response.json());
-
-                setLessons(result);
+                .then(response => response.json())
+                .then(result => {
+                    setLessons(
+                        result.filter(lesson => lesson.term === choosenTerm.number)
+                    )
+                });
                 };
                 fetchData();
             };
@@ -132,11 +135,10 @@ export default function Admin() {
 
 
     return (
-        <div>
+        <div>{console.log(lessons, choosenTerm.id)}
             <h2>
             Admin interface
             </h2>
-            {console.log(groupsLoading, termsLoading)}
             {
                 groupsLoading ? (<div><i>Groups is loading...</i></div>) : (
                     <ComboBox 
@@ -163,7 +165,9 @@ export default function Admin() {
             <SimpleTable
                 titles={loadTitles}
                 useStyles={useStyles}
-                rows={rows}
+                lessons={lessons}
+                loads={loads}
+                choosenTerm={choosenTerm}
              />
         </div>
     )

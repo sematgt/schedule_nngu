@@ -24,19 +24,22 @@ export default function SimpleTable(props) {
                 }
             </TableRow>
             </TableHead>
-            <TableBody>
-            {props.rows.map(row => (
-                <TableRow key={row.name}>
-                <TableCell component="th" scope="row">
-                    {row.name}
-                </TableCell>
-                <TableCell align="right">{row.calories}</TableCell>
-                <TableCell align="right">{row.fat}</TableCell>
-                <TableCell align="right">{row.carbs}</TableCell>
-                <TableCell align="right">{row.protein}</TableCell>
-                </TableRow>
-            ))}
-            </TableBody>
+            {
+                props.loads &&
+                <TableBody>
+                    {props.loads.map((load, index) => (
+                        <TableRow key={index}>
+                        <TableCell component="th" scope="row">
+                            {load.subject_name.name + ' - ' + load.subject_name.s_type}
+                        </TableCell>
+                        <TableCell align="right">{load.hours_count}</TableCell>
+                        <TableCell align="right">{props.lessons.filter(lesson => lesson.subject.name === load.subject_name.name && lesson.subject.s_type === load.subject_name.s_type).length*2}</TableCell>
+                        <TableCell align="right">{load.hours_count/props.choosenTerm.weeks_count_distance}</TableCell>
+                        <TableCell align="right">{load.hours_count/(props.choosenTerm.weeks_count_distance*2)}</TableCell>
+                        </TableRow>
+                    ))}
+                </TableBody>
+            }
         </Table>
         </TableContainer>
     );
