@@ -11,7 +11,7 @@ class LessonDistanceAdmin(admin.ModelAdmin):
     fields = ['subject', 'speaker', 'study_group', 'date_day', 'class_number', 'classroom', 'term']
     autocomplete_fields = ['subject']
     list_display = ('subject', 'study_group', 'date_day', 'class_number', 'speaker', 'classroom', 'term')
-    list_editable = ('term',)
+    list_editable = ('term', 'date_day')
     list_display_links = ('subject',)
     list_filter = ['date_day', 'study_group', 'term']
     ordering = ['-date_day', 'study_group', 'class_number']

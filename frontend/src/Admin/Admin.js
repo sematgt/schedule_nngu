@@ -2,10 +2,13 @@ import React, { useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import RadioButtonsGroup from './Components/RadioButtonsGroup'
 import ComboBox from './Components/ComboBox'
-import SimpleTable from './Components/SimpleTable'
+import LoadsTable from './Components/LoadsTable'
 import Select from './Components/Select'
-import { ApiURI } from '../AppConfig';
-
+import { ApiURI, class_timetable } from '../AppConfig';
+import getWeeksDays from '../Utils/GetWeeksDays';
+import ScheduleRowWithContent from '../Components/Body/ScheduleRowWithContent';
+import ScheduleCellWithWeekDays from '../Components/Body/ScheduleCellWithWeekDays';
+import './Admin.css'
 
 export default function Admin() {
     
@@ -53,6 +56,8 @@ export default function Admin() {
     const [lessons, setLessons] = React.useState([]);
 
     const [selectedWeek, setSelectedWeek] = React.useState('');
+
+    const [days, setDays] = React.useState([]);
 
     // handle components changes
 
@@ -119,7 +124,7 @@ export default function Admin() {
                 .then(response => response.json())
                 .then(result => {
                     setLessons(
-                        result.filter(lesson => lesson.term === selectedTerm.number)
+                        result.filter(lesson => lesson.term === selectedTerm.id)
                     )
                 });
                 };
@@ -132,7 +137,7 @@ export default function Admin() {
                 .then(response => response.json())
                 .then(result => {
                     setLessons(
-                        result.filter(lesson => lesson.term === selectedTerm.number)
+                        result.filter(lesson => lesson.term === selectedTerm.id)
                     )
                 });
                 };
@@ -140,6 +145,12 @@ export default function Admin() {
             };
 
     },[selectedGroup, selectedTerm])
+
+    // effect hooks
+
+    useEffect(() => {
+        setDays(getWeeksDays(selectedWeek, selectedGroup.mode_of_study));
+    },[selectedWeek])
 
     return (
         <div>
@@ -169,7 +180,7 @@ export default function Admin() {
                 )
             }
             <br />
-            <SimpleTable
+            <LoadsTable
                 titles={loadTitles}
                 useStyles={loadTableStyles}
                 lessons={lessons}
@@ -188,9 +199,43 @@ export default function Admin() {
                     label="Неделя"
                     values={selectedGroup.mode_of_study === 'distance' ? selectedTerm.weeks : ['Чётная', 'Нечётная']}
                     />
-                    <span>{selectedWeek}</span>
                 </div>
             }
+            <div className="admin-schedule">
+                {
+                    selectedWeek &&
+                    <div className="Schedule-wrapper">
+                        <div className="Schedule-row" id="0">
+                            <div className="Schedule-cell" id="left">
+                            </div>
+                                {days.map((day) => 
+                                    <ScheduleCellWithWeekDays 
+                                        day={day}
+                                        key={day.day}
+                                        study_mode={selectedGroup.mode_of_study}
+                                        selected_week_fulltime={selectedWeek}
+                                    />
+                                )
+                                }
+                        </div>
+                        {
+                            class_timetable.map(t => 
+                                <ScheduleRowWithContent 
+                                    key={t.id}
+                                    row_number={t.id}
+                                    days={days}
+                                    lessons= {lessons}
+                                    study_mode={selectedGroup.mode_of_study}
+                                    selected_group={selectedGroup.name}
+                                    selected_group_fulltime={selectedGroup.name}
+                                    selected_week_fulltime={selectedWeek === 'Чётная' ? 'even' : 'uneven'}
+                                    t={t}
+                                />
+                            )
+                        }
+                    </div>
+                }
+            </div>
         </div>
     )
 }
