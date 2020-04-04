@@ -11,6 +11,7 @@ import getWeeksDays from '../Utils/GetWeeksDays';
 import ScheduleRowWithContent from '../Components/Body/ScheduleRowWithContent';
 import ScheduleCellWithWeekDays from '../Components/Body/ScheduleCellWithWeekDays';
 import { ApiURI, class_timetable } from '../AppConfig';
+import { Link } from 'react-router-dom'
 
 
 class App extends React.Component {
@@ -286,7 +287,8 @@ class App extends React.Component {
                     }
                 </div>
                 <div className="Footer">
-                    <a href="https://github.com/semaphore8"  target="_blank" rel="noopener noreferrer">© 2019 S. Bliznyuk <span role="img" aria-label="Smile">🧐</span></a>
+                    <Link to="./admin"><span role="img" aria-label="edit">✍</span> Администраторам</Link>
+                    <a href="https://github.com/semaphore8"  target="_blank" rel="noopener noreferrer">© 2019 S. Bliznyuk <span role="img" aria-label="code">👨‍💻</span></a>
                 </div>
             </div>
     );

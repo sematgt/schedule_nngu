@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles';
 import RadioButtonsGroup from './Components/RadioButtonsGroup'
 import ComboBox from './Components/ComboBox'
@@ -154,8 +155,9 @@ export default function Admin() {
 
     return (
         <div>
+            <Link to="./">Вернуться к расписанию 🎓</Link>  
             <h2>
-            Admin interface
+            Административный интерфейс
             </h2>
             {
                 groupsLoading ? (<div><i>Groups is loading...</i></div>) : (

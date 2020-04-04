@@ -2,12 +2,25 @@
 	display: flex;
 	justify-content: center;
 	flex-basis: 1vh;
-	font: "Roboto";
+	font-family: 'Roboto', sans-serif;
 	font-weight: 450;
 	font-size: 10px;
 	align-self: center;
 }
 
-a:visited{
-	color: #094069;
+.Footer a {
+	color: #3f51b5;
+	text-decoration-color: #3f51b5;
+	margin-right: 5px;
+}
+
+.Footer a:visited{
+	color: #3f51b5;
+	text-decoration-color: #3f51b5;
+}
+
+.Footer a:hover{
+	color: #3f51b5;
+	text-decoration-color: #3f51b5;
+	background: #e2e6ff;
 }
