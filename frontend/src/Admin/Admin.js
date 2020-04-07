@@ -9,7 +9,8 @@ import { ApiURI, class_timetable } from '../AppConfig';
 import getWeeksDays from '../Utils/GetWeeksDays';
 import ScheduleRowWithContent from '../Components/Body/ScheduleRowWithContent';
 import ScheduleCellWithWeekDays from '../Components/Body/ScheduleCellWithWeekDays';
-import './Admin.css'
+import './Admin.css';
+import getWeekNumber from '../Utils/GetWeekNumber';
 
 export default function Admin() {
     
@@ -55,8 +56,9 @@ export default function Admin() {
     const [loads, setLoads] = React.useState([]);
 
     const [lessons, setLessons] = React.useState([]);
-
+    
     const [selectedWeek, setSelectedWeek] = React.useState('');
+    const [selectedWeekParity, setSelectedWeekParity] = React.useState('');
     
     const [days, setDays] = React.useState([]);
 
@@ -65,6 +67,10 @@ export default function Admin() {
     const [selectedClassroom, setSelectedClassroom] = React.useState('');
     const [speakerChoices, setSpeakerChoices] = React.useState([]);
     const [classroomChoices, setClassroomChoices] = React.useState([]);
+
+    const [speakerClassesDistance, setSpeakerClassesDistance] = React.useState([]);
+    const [speakerClassesFulltime, setSpeakerClassesFulltime] = React.useState([]);
+
 
     // handle components changes
 
@@ -107,8 +113,7 @@ export default function Admin() {
     const [groupsLoading, setGroupsLoading] = React.useState(false);
     const [termsLoading, setTermsLoading] = React.useState(false);
     const [subjectInfoLoading, setSubjectInfoLoading] = React.useState(false);
-    // const [groupsError, setGroupsError] = React.useState(false);
-    // const [termsError, setTermsError] = React.useState(false);
+    const [speakerClassesLoading, setSpeakerClassesLoading] = React.useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -117,6 +122,7 @@ export default function Admin() {
             .then(response => response.json());
             setGroupChoices(result_groups);
             setGroupsLoading(false);
+            console.log('groups fetched');
         };
         fetchData();
     },[])
@@ -128,6 +134,7 @@ export default function Admin() {
             .then(response => response.json());
             setTermChoices(result_terms);
             setTermsLoading(false); 
+            console.log('terms fetched');
         };
         fetchData();
     },[])
@@ -142,11 +149,12 @@ export default function Admin() {
                         result.filter(load => load.group === selectedGroup.id && load.term === selectedTerm.id)
                     )
                 });
+                console.log('loads fetched');
             };
             fetchData();
         };
 
-        if (selectedGroup.mode_of_study === 'distance') {
+        if (selectedTerm && selectedGroup.mode_of_study === 'distance') {
             const fetchData = async () => {
                 await fetch(ApiURI + '/lessons_distance/')
                 .then(response => response.json())
@@ -155,11 +163,12 @@ export default function Admin() {
                         result.filter(lesson => lesson.term === selectedTerm.id)
                     )
                 });
+                console.log('lessons fetched');
                 };
                 fetchData();
             };
             
-        if (selectedGroup.mode_of_study === 'fulltime') {
+        if (selectedTerm && selectedGroup.mode_of_study === 'fulltime') {
             const fetchData = async () => {
                 await fetch(ApiURI + '/lessons_fulltime/')
                 .then(response => response.json())
@@ -168,6 +177,7 @@ export default function Admin() {
                         result.filter(lesson => lesson.term === selectedTerm.id)
                     )
                 });
+                console.log('lessons fetched');
                 };
                 fetchData();
             };
@@ -183,19 +193,58 @@ export default function Admin() {
                 setSpeakerChoices(result.speaker_list);
                 setClassroomChoices(result.classrooms_list);
                 setSubjectInfoLoading(false);
+                console.log('subjects fetched');
             };
             fetchData();
         };
     },[selectedSubject])
 
+    useEffect(() => {
+        if (selectedSpeaker) {
+            const fetchDistanceClasses = async () => {
+                setSpeakerClassesLoading(true);
+                await fetch(ApiURI + '/lessons_distance/')
+                .then(response => response.json())
+                .then(result => 
+                        setSpeakerClassesDistance(result.filter(c => c.speaker === selectedSpeaker && c.term === selectedTerm.id))
+                    );
+                setSpeakerClassesLoading(false);
+                console.log('speaker d classes fetched');
+            };
+            fetchDistanceClasses();
+    
+            const fetchFulltimeClasses = async () => {
+                setSpeakerClassesLoading(true);
+                await fetch(ApiURI + '/lessons_fulltime/')
+                .then(response => response.json())
+                .then(result => 
+                        setSpeakerClassesFulltime(result.filter(c => c.speaker === selectedSpeaker && c.term === selectedTerm.id))
+                    );
+                setSpeakerClassesLoading(false);
+                console.log('speaker f classes fetched');
+            };
+            fetchFulltimeClasses();
+        };
+    }, [selectedSpeaker, selectedTerm.id])
+
+
     // effect hooks
 
     useEffect(() => {
-        setDays(getWeeksDays(selectedWeek, selectedGroup.mode_of_study));
-    },[selectedWeek])
+        if (selectedWeek) {
+            setDays(getWeeksDays(selectedWeek, selectedGroup.mode_of_study));
+            let date = new Date(selectedWeek);
+            let selectedWeekNumber = getWeekNumber(date);
+            if (selectedWeekNumber % 2 === 0) 
+            setSelectedWeekParity('even')
+            else if (selectedWeekNumber % 2 === 1) 
+            setSelectedWeekParity('uneven')
+        }
+    },[selectedWeek, selectedGroup.mode_of_study])
 
+    
     return (
-        <div className="Admin">{console.log(days, lessons)}
+        <div className="Admin"> {console.log(selectedWeekParity)}
             <Link to="./">Вернуться к расписанию <span role="img" aria-label="hat">🎓</span></Link>  
             <h2>
             Административный интерфейс
