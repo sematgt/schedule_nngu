@@ -72,15 +72,19 @@ class SubjectSerializer(serializers.ModelSerializer):
 
 class SpeakerBlockedTimeFulltimeSerializer(serializers.ModelSerializer):
 
+    speaker_info = SpeakersListSerializer(source='speaker')
+    
     class Meta:
         model = SpeakerBlockedTimeFulltime
-        fields = ['speaker', 'week_parity', 'class_number', 'day']
+        fields = ['speaker_info', 'week_parity', 'class_number', 'day']
 
 class SpeakerBlockedTimeDistanceSerializer(serializers.ModelSerializer):
 
+    speaker_info = SpeakersListSerializer(source='speaker')
+
     class Meta:
         model = SpeakerBlockedTimeDistance
-        fields = ['speaker', 'date_day', 'class_number']
+        fields = ['speaker_info', 'date_day', 'class_number']
 
 class TermSerializer(serializers.ModelSerializer):
 

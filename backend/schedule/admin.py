@@ -13,7 +13,7 @@ class LessonDistanceAdmin(admin.ModelAdmin):
     list_display = ('subject', 'study_group', 'date_day', 'class_number', 'speaker', 'classroom', 'term')
     list_editable = ('term', 'date_day')
     list_display_links = ('subject',)
-    list_filter = ['date_day', 'study_group', 'term']
+    list_filter = ['date_day', 'study_group', 'term', 'speaker']
     ordering = ['-date_day', 'study_group', 'class_number']
 
     
@@ -26,7 +26,7 @@ class LessonFulltimeAdmin(admin.ModelAdmin):
     autocomplete_fields = ['subject', 'speaker']
     list_display = ('subject', 'study_group', 'class_number', 'speaker', 'classroom', 'week_parity', 'day', 'term')
     list_display_links = ('subject',)
-    list_filter = ['study_group', 'week_parity', 'day', 'term']
+    list_filter = ['study_group', 'week_parity', 'day', 'term', 'speaker']
     ordering = ['day', 'week_parity', 'study_group', 'class_number']
     list_editable = ('term',)
     
