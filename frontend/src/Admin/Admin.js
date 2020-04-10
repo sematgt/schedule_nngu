@@ -74,7 +74,7 @@ export default function Admin() {
     const [speakerBlockedSlotsDistance, setSpeakerBlockedSlotsDistance] = React.useState([]);
     const [speakerBlockedSlotsFulltime, setSpeakerBlockedSlotsFulltime] = React.useState([]);
 
-    const [scheduleFreeSlotsArray, setScheduleFreeSlotsArray] = React.useState([]);
+    const [scheduleFreeSlotsArray, setScheduleFreeSlotsArray] = React.useState();
     
 
     // handle components changes
@@ -100,6 +100,7 @@ export default function Admin() {
     };
 
     const handleChangeSpeaker = (event) => {
+        console.log('speakerChange fired');
         setSelectedSpeaker(event.target.value);
     };
     
@@ -231,13 +232,15 @@ export default function Admin() {
     // effect hooks
 
     useEffect(() => {
-        console.log('useEffect fired', speakerDataLoaded)
-
+        console.log('speakerDataLoaded useeffect fired. speakerDataLoaded is ', speakerDataLoaded)
         if (speakerDataLoaded) {
+            console.log('getFreeScheduleSlotsArray fired. days after func', days)
             setScheduleFreeSlotsArray(getFreeScheduleSlotsArray(days, lessons, selectedWeekParity, speakerClassesDistance, speakerClassesFulltime, speakerBlockedSlotsDistance, speakerBlockedSlotsFulltime));
+            console.log('days in effect hook after func', days);
+
             setSpeakerDataLoaded(false);
         }
-    },[speakerDataLoaded])
+    },[speakerDataLoaded, days, lessons, selectedWeekParity, speakerClassesDistance, speakerClassesFulltime, speakerBlockedSlotsDistance, speakerBlockedSlotsFulltime])
 
     useEffect(() => {
         if (selectedWeek) {
@@ -253,7 +256,7 @@ export default function Admin() {
 
     
     return (
-        <div className="Admin"> {console.log(scheduleFreeSlotsArray)}
+        <div className="Admin"> {console.log('days in render', days)}
             <div className="header">
                 <Link to="./">Вернуться к расписанию <span role="img" aria-label="hat">🎓</span></Link>  
                 <h2>
@@ -373,6 +376,7 @@ export default function Admin() {
                                     selected_group_fulltime={selectedGroup.name}
                                     selected_week_fulltime={selectedWeek === 'Чётная' ? 'even' : 'uneven'}
                                     t={t}
+                                    free_slots_array={scheduleFreeSlotsArray}
                                 />
                             )
                         }

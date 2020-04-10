@@ -18,6 +18,7 @@ export default function ScheduleRowWithContent(props) {
                     selected_group={props.selected_group}
                     selected_group_fulltime={props.selected_group_fulltime}
                     selected_week_fulltime={props.selected_week_fulltime}
+                    free_slots_array={props.free_slots_array && props.free_slots_array.filter(slot => slot.date === day.date)}
                 />
         )    
         }
