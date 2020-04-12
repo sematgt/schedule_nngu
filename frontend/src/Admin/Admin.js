@@ -85,22 +85,24 @@ export default function Admin() {
         setSelectedSpeaker('');
         setSelectedClassroom('');
         setSelectedSubject('');
+        setScheduleFreeSlotsArray();
     };
-
+    
     const handleChangeGroup = (event, value) => {
         value ? setSelectedGroup(value) : setSelectedGroup('');
         setSelectedWeek('');
         setSelectedSpeaker('');
         setSelectedClassroom('');
         setSelectedSubject('');
+        setScheduleFreeSlotsArray();
     }
-
+    
     const handleChangeWeek = (event) => {
         setSelectedWeek(event.target.value);
+        setScheduleFreeSlotsArray();
     };
 
     const handleChangeSpeaker = (event) => {
-        console.log('speakerChange fired');
         setSelectedSpeaker(event.target.value);
     };
     
@@ -131,10 +133,9 @@ export default function Admin() {
             .then(response => response.json())
             .then(result => setTermChoices(result))
             setGroupsAndTermsLoading(false);
-            console.log('groups and terms fetched');
         };
         fetchData();
-    },[])
+    }, [])
   
     useEffect(() => {
         if (selectedTerm && selectedGroup) {
@@ -146,7 +147,6 @@ export default function Admin() {
                         result.filter(load => load.group === selectedGroup.id && load.term === selectedTerm.id)
                     )
                 });
-                console.log('loads fetched');
             };
             fetchData();
         };
@@ -160,7 +160,6 @@ export default function Admin() {
                         result.filter(lesson => lesson.term === selectedTerm.id)
                     )
                 });
-                console.log('lessons fetched');
                 };
                 fetchData();
             };
@@ -174,12 +173,11 @@ export default function Admin() {
                         result.filter(lesson => lesson.term === selectedTerm.id)
                     )
                 });
-                console.log('lessons fetched');
                 };
                 fetchData();
             };
 
-    },[selectedGroup, selectedTerm])
+    }, [selectedGroup, selectedTerm])
 
     useEffect(() => {
         if (selectedSubject) {
@@ -190,11 +188,10 @@ export default function Admin() {
                 setSpeakerChoices(result.speaker_list);
                 setClassroomChoices(result.classrooms_list);
                 setSubjectInfoLoading(false);
-                console.log('subjects fetched');
             };
             fetchData();
         };
-    },[selectedSubject])
+    }, [selectedSubject])
 
     useEffect(() => {
         if (selectedSpeaker) {
@@ -222,25 +219,22 @@ export default function Admin() {
                     );
                 setSpeakerDataLoading(false);
                 setSpeakerDataLoaded(true);
-                console.log('speaker`s data fetched');
             };
             fetchData();
         };
-    }, [selectedSpeaker, selectedTerm.id])
+    }, [selectedSpeaker, selectedTerm])
 
 
     // effect hooks
 
     useEffect(() => {
-        console.log('speakerDataLoaded useeffect fired. speakerDataLoaded is ', speakerDataLoaded)
         if (speakerDataLoaded) {
-            console.log('getFreeScheduleSlotsArray fired. days after func', days)
-            setScheduleFreeSlotsArray(getFreeScheduleSlotsArray(days, lessons, selectedWeekParity, speakerClassesDistance, speakerClassesFulltime, speakerBlockedSlotsDistance, speakerBlockedSlotsFulltime));
-            console.log('days in effect hook after func', days);
+            var group_lessons = lessons.filter(l => l.study_group === selectedGroup.name);
+            setScheduleFreeSlotsArray(getFreeScheduleSlotsArray(days, group_lessons, selectedWeekParity, speakerClassesDistance, speakerClassesFulltime, speakerBlockedSlotsDistance, speakerBlockedSlotsFulltime));
 
             setSpeakerDataLoaded(false);
         }
-    },[speakerDataLoaded, days, lessons, selectedWeekParity, speakerClassesDistance, speakerClassesFulltime, speakerBlockedSlotsDistance, speakerBlockedSlotsFulltime])
+    }, [speakerDataLoaded, days, lessons, selectedWeekParity, speakerClassesDistance, speakerClassesFulltime, speakerBlockedSlotsDistance, speakerBlockedSlotsFulltime])
 
     useEffect(() => {
         if (selectedWeek) {
@@ -252,11 +246,17 @@ export default function Admin() {
             else if (selectedWeekNumber % 2 === 1) 
             setSelectedWeekParity('uneven')
         }
-    },[selectedWeek, selectedGroup.mode_of_study])
+
+        if (selectedWeek && selectedSubject && selectedSpeaker) {
+            var group_lessons = lessons.filter(l => l.study_group === selectedGroup.name);
+            var updated_days = getWeeksDays(selectedWeek, selectedGroup.mode_of_study);
+            setScheduleFreeSlotsArray(getFreeScheduleSlotsArray(updated_days, group_lessons, selectedWeekParity, speakerClassesDistance, speakerClassesFulltime, speakerBlockedSlotsDistance, speakerBlockedSlotsFulltime));
+        }
+    }, [selectedWeek, selectedGroup.mode_of_study])
 
     
     return (
-        <div className="Admin"> {console.log('days in render', days)}
+        <div className="Admin"> 
             <div className="header">
                 <Link to="./">Вернуться к расписанию <span role="img" aria-label="hat">🎓</span></Link>  
                 <h2>

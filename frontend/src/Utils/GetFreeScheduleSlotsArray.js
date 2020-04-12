@@ -32,7 +32,6 @@ export default function getFreeScheduleSlotsArray(days, lessons, selectedWeekPar
         }
       }
 
-
     // handle "classes_count"
 
       var i = 0;

@@ -13,7 +13,7 @@ export default function ScheduleCellWithContent(props) {
             <div className="Schedule-cell" key={props.class_number + props.day.wday}
                 id={
                 props.free_slots_array &&
-                (((props.free_slots_array[0].classes_count === 0 || slotInfo[0].class_in_streak) && slotInfo[0].classroom_is_free && !slotInfo[0].lesson && slotInfo[0].speaker_is_free) ? "active" : "passive")
+                (((props.free_slots_array[0].classes_count === 0 || slotInfo[0].class_in_streak) && slotInfo[0].classroom_is_free && !slotInfo[0].lesson && slotInfo[0].speaker_is_free && props.free_slots_array[0].classes_count < 4) ? "active" : "passive")
             }>
                 {
                     lesson && 
