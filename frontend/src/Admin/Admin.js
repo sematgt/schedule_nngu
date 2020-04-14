@@ -260,7 +260,7 @@ export default function Admin() {
     useEffect(() => {
         if (selectedSpeaker) {
             console.log(selectedClassroom, scheduleFreeSlotsArray, lessons)
-            setScheduleFreeSlotsArray(addClassroomAvailabilityToScheduleFreeSlotsArray(selectedClassroom, scheduleFreeSlotsArray, lessons, selectedWeekParity))
+            setScheduleFreeSlotsArray(addClassroomAvailabilityToScheduleFreeSlotsArray(selectedGroup.mode_of_study, selectedClassroom, scheduleFreeSlotsArray, lessons, selectedWeekParity))
         }
     }, [selectedClassroom])
     
