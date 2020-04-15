@@ -13,6 +13,8 @@ import './Admin.css';
 import getWeekNumber from '../Utils/GetWeekNumber';
 import getFreeScheduleSlotsArray from '../Utils/GetFreeScheduleSlotsArray';
 import addClassroomAvailabilityToScheduleFreeSlotsArray from '../Utils/AddClassroomAvailabilityToScheduleFreeSlotsArray';
+import Chip from '@material-ui/core/Chip';
+import Tooltip from '@material-ui/core/Tooltip';
 
 export default function Admin() {
     
@@ -77,6 +79,12 @@ export default function Admin() {
 
     const [scheduleFreeSlotsArray, setScheduleFreeSlotsArray] = React.useState();
     
+    const [selectedDate, setSelectedDate] = React.useState();
+    const [selectedDay, setSelectedDay] = React.useState();
+    const [selectedClassnumber, setSelectedClassnumber] = React.useState();
+
+
+    
 
     // handle components changes
 
@@ -87,6 +95,7 @@ export default function Admin() {
         setSelectedClassroom('');
         setSelectedSubject('');
         setScheduleFreeSlotsArray();
+        clearSelectedSlot();
     };
     
     const handleChangeGroup = (event, value) => {
@@ -96,26 +105,66 @@ export default function Admin() {
         setSelectedClassroom('');
         setSelectedSubject('');
         setScheduleFreeSlotsArray();
+        clearSelectedSlot();
     }
     
     const handleChangeWeek = (event) => {
         setSelectedWeek(event.target.value);
-        setScheduleFreeSlotsArray();
+        clearSelectedSlot();
     };
 
     const handleChangeSpeaker = (event) => {
         setSelectedSpeaker(event.target.value);
+        clearSelectedSlot();
     };
     
     const handleChangeSubject = (event, value) => {
         setSelectedSubject(value.id);
         setSelectedSpeaker('');
         setSelectedClassroom('');
+        clearSelectedSlot();
     };
 
     const handleChangeClassroom = (event) => {
         setSelectedClassroom(event.target.value);
+        clearSelectedSlot();
     };
+
+    const handleChangeDate = (target) => {
+        if (selectedClassroom) {
+            setSelectedDate(target.attributes.date.value);
+        }
+    };
+
+    const handleChangeDay = (target) => {
+        if (selectedClassroom) {
+            setSelectedDay(target.attributes.day.value);
+        }
+    };
+
+    const handleChangeClassnumber = (target) => {
+        if (selectedClassroom) {
+            setSelectedClassnumber(target.attributes.classnumber.value);
+        }
+    };
+
+    const handleDateDelete = () => {
+        setSelectedDate();
+    };
+
+    const handleDayDelete = () => {
+        setSelectedDay();
+    };
+
+    const handleClassnumberDelete = () => {
+        setSelectedClassnumber();
+    };
+
+    const clearSelectedSlot = () => {
+        handleDateDelete();
+        handleDayDelete();
+        handleClassnumberDelete();
+    }
 
     // data fetching
 
@@ -360,6 +409,32 @@ export default function Admin() {
                         />
                     </div>
                 }
+                <div className="selects">
+                    {
+                        (selectedSpeaker && selectedClassroom && selectedDate && selectedGroup.mode_of_study === 'distance') && 
+                                    <Tooltip title="Выбранная дата" arrow>
+                                        <Chip variant="outlined" label={selectedDate} onDelete={handleDateDelete} />
+                                    </Tooltip>
+                    }
+                    {
+                        (selectedSpeaker && selectedClassroom && selectedDay && selectedGroup.mode_of_study === 'fulltime') && 
+                                    <Tooltip title="Выбранный день" arrow>
+                                        <Chip variant="outlined" label={selectedDay} onDelete={handleDayDelete} />
+                                    </Tooltip>
+                    }
+                    {
+                        (selectedSpeaker && selectedClassroom && selectedGroup.mode_of_study === 'fulltime') && 
+                                    <Tooltip title="Выбранная неделя" arrow>
+                                        <Chip variant="outlined" label={selectedWeekParity === 'even' ? 'Чётная' : 'Нечётная'} />
+                                    </Tooltip>
+                    }
+                    {
+                        (selectedSpeaker && selectedClassroom && selectedClassnumber) && 
+                                    <Tooltip title="Выбранный номер пары" arrow>
+                                        <Chip variant="outlined" label={selectedClassnumber} onDelete={handleClassnumberDelete} />
+                                    </Tooltip>
+                    }
+                </div>
             </div>
             <div className="admin-schedule">
                 {
@@ -391,6 +466,9 @@ export default function Admin() {
                                     selected_week_fulltime={selectedWeek === 'Чётная' ? 'even' : 'uneven'}
                                     t={t}
                                     free_slots_array={scheduleFreeSlotsArray}
+                                    handleChangeDate={handleChangeDate}
+                                    handleChangeDay={handleChangeDay}
+                                    handleChangeClassnumber={handleChangeClassnumber}
                                 />
                             )
                         }
@@ -399,8 +477,4 @@ export default function Admin() {
             </div>
         </div>
     )
-}
-
-
-
-
+            }

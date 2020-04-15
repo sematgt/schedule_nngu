@@ -14,7 +14,7 @@ export default function getFreeScheduleSlotsArray(studyMode, days, lessons, sele
   				'lesson': false,
   				'speaker_is_free': true,
   				'classroom_is_free': true,
-  				'class_in_streak': false,
+  				'class_in_streak': null,
   			}
       );
     }
@@ -30,6 +30,11 @@ export default function getFreeScheduleSlotsArray(studyMode, days, lessons, sele
             day.classes[c].lesson = true;
             try {day.classes[parseInt(c)+1].class_in_streak = true} catch(e) {};
             try {day.classes[parseInt(c)-1].class_in_streak = true} catch(e) {};
+            for (let i = 1; i <=6; i++) {
+              if (day.classes[parseInt(c)+1].lesson !== true) {
+                try {day.classes[i].class_in_streak = false} catch(e) {};
+              }
+            }
           }
         }
       }
@@ -42,6 +47,11 @@ export default function getFreeScheduleSlotsArray(studyMode, days, lessons, sele
             day.classes[c].lesson = true;
             try {day.classes[parseInt(c)+1].class_in_streak = true} catch(e) {};
             try {day.classes[parseInt(c)-1].class_in_streak = true} catch(e) {};
+            for (let i = parseInt(c)+2; i <=6; i++) {
+              if (day.classes[parseInt(c)+1].lesson !== true) {
+                try {day.classes[i].class_in_streak = false} catch(e) {};
+              }
+            }
           }
         }
       }

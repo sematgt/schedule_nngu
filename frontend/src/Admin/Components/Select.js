@@ -11,7 +11,7 @@ export default function SimpleSelect(props) {
 
   return (
     <div>
-      <FormControl variant="outlined" className={classes.formControl}>
+      <FormControl variant="outlined" className={classes.formControl} disabled={props.disabled === true ? true : false}>
         <InputLabel id="demo-simple-select-outlined-label">{props.label}</InputLabel>
         <Select
           labelId="demo-simple-select-outlined-label"
@@ -20,7 +20,7 @@ export default function SimpleSelect(props) {
           onChange={props.handleChange}
           label={props.label}
         >
-        {
+        {   props.values && 
             props.values.map((value, index) =>
                 <MenuItem value={value} key={index}>{value}</MenuItem>
             )
