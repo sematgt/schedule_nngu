@@ -24,14 +24,20 @@
 
 .admin-schedule .Schedule-wrapper {
 	height: auto;
-	margin: 2rem 0 2rem 0;
 }
 
 .Admin .selects {
 	display: flex;
+	align-items: center;
+}
+
+.Admin .helptext {
+	display: flex; 
+	flex-direction:column; 
+	justify-content: center;
 }
 
 .Schedule-cell#active {
-	background-color: cornflowerblue;
+	background-color: rgb(209, 216, 255);
 	cursor: pointer;
 }

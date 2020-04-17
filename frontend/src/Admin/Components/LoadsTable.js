@@ -12,7 +12,7 @@ export default function SimpleTable(props) {
     const classes = props.useStyles();
 
     return (
-        <TableContainer className={classes.root} component={Paper}>
+        <TableContainer className={classes.root} component={Paper} variant="outlined" style={{ marginTop: 8 }}>
         <Table className={classes.table} aria-label="simple table">
             <TableHead>
             <TableRow>

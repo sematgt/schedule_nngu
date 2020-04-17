@@ -16,6 +16,9 @@ import addClassroomAvailabilityToScheduleFreeSlotsArray from '../Utils/AddClassr
 import Chip from '@material-ui/core/Chip';
 import Tooltip from '@material-ui/core/Tooltip';
 import Button from '@material-ui/core/Button';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
+
 
 export default function Admin() {
     
@@ -42,7 +45,7 @@ export default function Admin() {
 
     const selectStyles = makeStyles((theme) => ({
         formControl: {
-          margin: theme.spacing(1),
+          marginRight: theme.spacing(1),
           minWidth: 150,
         },
         selectEmpty: {
@@ -324,7 +327,7 @@ export default function Admin() {
             </div>
             <div className="selects">
                 {
-                    groupsAndTermsLoading ? (<div><i>Groups are loading...</i></div>) : (
+                    groupsAndTermsLoading ? (<div className="helptext"><i>Загрузка учебных групп... </i></div>) : (
                         <ComboBox 
                             label="Группа"
                             options={groupChoices}
@@ -338,7 +341,7 @@ export default function Admin() {
                     )
                 }
                 {
-                    groupsAndTermsLoading ? (<div><i>Terms are loading...</i></div>) : (
+                    groupsAndTermsLoading ? (<div className="helptext"><i>Загрузка семестров...</i></div>) : (
                         <RadioButtonsGroup 
                             label="Семестр"
                             handleChange={handleChangeTerm}
@@ -347,14 +350,17 @@ export default function Admin() {
                     )
                 }
             </div>
-            <LoadsTable
-                titles={loadTitles}
-                useStyles={loadTableStyles}
-                lessons={lessons}
-                loads={loads}
-                selectedTerm={selectedTerm}
-                study_mode={selectedGroup.mode_of_study}
-             />
+            {
+                (selectedTerm && selectedGroup) && 
+                    <LoadsTable
+                        titles={loadTitles}
+                        useStyles={loadTableStyles}
+                        lessons={lessons}
+                        loads={loads}
+                        selectedTerm={selectedTerm}
+                        study_mode={selectedGroup.mode_of_study}
+                    />
+            }
             <br />
             <div className="selects">
                 {
@@ -379,12 +385,12 @@ export default function Admin() {
                             autoHighlight={true}
                             handleChange={handleChangeSubject}
                             getOptionLabel={option => option.name + ' - ' + option.s_type}
-                            style={{ width: 400, margin: 8 }}
+                            style={{ width: 400, marginRight: 8 }}
                     />
                 }
                 {
                     (selectedSubject && selectedWeek && subjectInfoLoading) && 
-                        <div><i>Subject info is loading...</i></div> 
+                        <div className="helptext"><i>Загрузка информации о предмете...</i></div> 
                 }
                 {
                     (selectedSubject && selectedWeek && !subjectInfoLoading) &&
@@ -410,86 +416,94 @@ export default function Admin() {
                         />
                     </div>
                 }
-                <div className="selects">
-                    {
-                        (selectedSpeaker && selectedClassroom && selectedDate && selectedGroup.mode_of_study === 'distance') && 
-                            <Tooltip title="Выбранная дата" arrow>
-                                <Chip variant="outlined" label={selectedDate} onDelete={handleDateDelete} style={{ margin: 8 }}/>
-                            </Tooltip>
-                    }
-                    {
-                        (selectedSpeaker && selectedClassroom && selectedGroup.mode_of_study === 'fulltime') && 
-                            <Tooltip title="Выбранная неделя" arrow>
-                                <Chip variant="outlined" label={selectedWeekParity === 'even' ? 'Чётная' : 'Нечётная'} style={{ margin: 8 }}/>
-                            </Tooltip>
-                    }
-                    {
-                        (selectedSpeaker && selectedClassroom && selectedDay && selectedGroup.mode_of_study === 'fulltime') && 
-                            <Tooltip title="Выбранный день" arrow>
-                                <Chip variant="outlined" label={selectedDay} onDelete={handleDayDelete} style={{ margin: 8 }}/>
-                            </Tooltip>
-                    }
-                    {
-                        (selectedSpeaker && selectedClassroom && selectedClassnumber) && 
-                            <Tooltip title="Выбранный номер пары" arrow>
-                                <Chip variant="outlined" label={selectedClassnumber} onDelete={handleClassnumberDelete} style={{ margin: 8 }}/>
-                            </Tooltip>
-                    }
-                </div>
-                <div className="buttons">
-                    {
-                        ((selectedSpeaker && selectedClassroom && selectedDate && selectedClassnumber) || ( selectedSpeaker && selectedClassroom && selectedDay && selectedWeekParity && selectedClassnumber )) &&
-                        <>
-                            <Tooltip title="Добавить занятие как черновик" arrow>
-                                <Button variant="contained" style={{ margin: 8 }}>Добавить черновик</Button>
-                            </Tooltip>
-                            <Tooltip title="Опубликовать занятие в расписание" arrow>
-                                <Button variant="contained" color="primary" style={{ margin: 8 }}>Опубликовать занятие</Button>
-                            </Tooltip>
-                            <Tooltip title="Удалить занятие" arrow>
-                                <Button color="secondary" style={{ margin: 8 }}>Удалить занятие</Button>
-                            </Tooltip>
-                        </>
-                    }
-                </div>
+                {
+                    (selectedSpeaker && selectedClassroom) &&
+                    <Paper elevation={0}>
+                    <div className="selects" style={{ height: 56 }}>
+                        {
+                            (selectedSpeaker && selectedClassroom && selectedDate && selectedGroup.mode_of_study === 'distance') && 
+                                <Tooltip title="Выбранная дата" arrow>
+                                    <Chip variant="outlined" label={selectedDate} onDelete={handleDateDelete} style={{ margin: 8, alignSelf: "center" }}/>
+                                </Tooltip>
+                        }
+                        {
+                            (selectedSpeaker && selectedClassroom && selectedGroup.mode_of_study === 'fulltime') && 
+                                <Tooltip title="Выбранная неделя" arrow>
+                                    <Chip variant="outlined" label={selectedWeekParity === 'even' ? 'Чётная' : 'Нечётная'} style={{ margin: 8 }}/>
+                                </Tooltip>
+                        }
+                        {
+                            (selectedSpeaker && selectedClassroom && selectedDay && selectedGroup.mode_of_study === 'fulltime') && 
+                                <Tooltip title="Выбранный день" arrow>
+                                    <Chip variant="outlined" label={selectedDay} onDelete={handleDayDelete} style={{ marginRight: 8, alignSelf: "center" }}/>
+                                </Tooltip>
+                        }
+                        {
+                            (selectedSpeaker && selectedClassroom && selectedClassnumber) && 
+                                <Tooltip title="Выбранный номер пары" arrow>
+                                    <Chip variant="outlined" label={selectedClassnumber} onDelete={handleClassnumberDelete} style={{ marginRight: 8, alignSelf: "center" }}/>
+                                </Tooltip>
+                        }
+                        {
+                            ((selectedSpeaker && selectedClassroom && selectedDate && selectedClassnumber) || ( selectedSpeaker && selectedClassroom && selectedDay && selectedWeekParity && selectedClassnumber )) ?
+                            <>
+                                <Tooltip title="Опубликовать занятие в расписание" arrow>
+                                    <Button variant="contained" color="primary" style={{ margin: 8 }}>Опубликовать занятие</Button>
+                                </Tooltip>
+                                <Tooltip title="Добавить занятие как черновик" arrow>
+                                    <Button variant="contained" style={{ margin: 8 }}>Добавить черновик</Button>
+                                </Tooltip>
+                                <Tooltip title="Удалить занятие" arrow>
+                                    <Button color="secondary" style={{ margin: 8 }}>Удалить занятие</Button>
+                                </Tooltip>
+                            </>
+                            :
+                            (selectedSpeaker && selectedClassroom) &&
+                            <Typography variant="body1" display="inline" style={{ marginRight: 8 }}><i>Выберите свободную ячейку в расписании</i></Typography>
+                        }
+                    </div>
+                    </Paper>
+                }
             </div>
             <div className="admin-schedule">
                 {
                     selectedWeek &&
-                    <div className="Schedule-wrapper">
-                        <div className="Schedule-row" id="0">
-                            <div className="Schedule-cell" id="left">
+                    <Paper variant="outlined" style={{ marginTop: 8 }}>
+                        <div className="Schedule-wrapper">
+                            <div className="Schedule-row" id="0">
+                                <div className="Schedule-cell" id="left">
+                                </div>
+                                    {days.map((day) => 
+                                        <ScheduleCellWithWeekDays 
+                                            day={day}
+                                            key={day.day}
+                                            study_mode={selectedGroup.mode_of_study}
+                                            selected_week_fulltime={selectedWeek}
+                                        />
+                                    )
+                                    }
                             </div>
-                                {days.map((day) => 
-                                    <ScheduleCellWithWeekDays 
-                                        day={day}
-                                        key={day.day}
+                            {
+                                class_timetable.map(t => 
+                                    <ScheduleRowWithContent 
+                                        key={t.id}
+                                        row_number={t.id}
+                                        days={days}
+                                        lessons= {lessons}
                                         study_mode={selectedGroup.mode_of_study}
-                                        selected_week_fulltime={selectedWeek}
+                                        selected_group={selectedGroup.name}
+                                        selected_group_fulltime={selectedGroup.name}
+                                        selected_week_fulltime={selectedWeek === 'Чётная' ? 'even' : 'uneven'}
+                                        t={t}
+                                        free_slots_array={scheduleFreeSlotsArray}
+                                        handleChangeDate={handleChangeDate}
+                                        handleChangeDay={handleChangeDay}
+                                        handleChangeClassnumber={handleChangeClassnumber}
                                     />
                                 )
-                                }
+                            }
                         </div>
-                        {
-                            class_timetable.map(t => 
-                                <ScheduleRowWithContent 
-                                    key={t.id}
-                                    row_number={t.id}
-                                    days={days}
-                                    lessons= {lessons}
-                                    study_mode={selectedGroup.mode_of_study}
-                                    selected_group={selectedGroup.name}
-                                    selected_group_fulltime={selectedGroup.name}
-                                    selected_week_fulltime={selectedWeek === 'Чётная' ? 'even' : 'uneven'}
-                                    t={t}
-                                    free_slots_array={scheduleFreeSlotsArray}
-                                    handleChangeDate={handleChangeDate}
-                                    handleChangeDay={handleChangeDay}
-                                    handleChangeClassnumber={handleChangeClassnumber}
-                                />
-                            )
-                        }
-                    </div>
+                    </Paper>
                 }
             </div>
         </div>
