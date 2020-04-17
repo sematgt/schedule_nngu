@@ -32,10 +32,6 @@
 	flex-direction: row;
 }
 
-.Schedule-cell#active {
-	background-color: cornflowerblue;
-}
-
 .Schedule-cell span{
 	margin-left:  5px;
 }

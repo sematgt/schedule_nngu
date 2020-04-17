@@ -30,3 +30,8 @@
 .Admin .selects {
 	display: flex;
 }
+
+.Schedule-cell#active {
+	background-color: cornflowerblue;
+	cursor: pointer;
+}
