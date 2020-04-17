@@ -15,6 +15,7 @@ import getFreeScheduleSlotsArray from '../Utils/GetFreeScheduleSlotsArray';
 import addClassroomAvailabilityToScheduleFreeSlotsArray from '../Utils/AddClassroomAvailabilityToScheduleFreeSlotsArray';
 import Chip from '@material-ui/core/Chip';
 import Tooltip from '@material-ui/core/Tooltip';
+import Button from '@material-ui/core/Button';
 
 export default function Admin() {
     
@@ -412,27 +413,43 @@ export default function Admin() {
                 <div className="selects">
                     {
                         (selectedSpeaker && selectedClassroom && selectedDate && selectedGroup.mode_of_study === 'distance') && 
-                                    <Tooltip title="Выбранная дата" arrow>
-                                        <Chip variant="outlined" label={selectedDate} onDelete={handleDateDelete} />
-                                    </Tooltip>
+                            <Tooltip title="Выбранная дата" arrow>
+                                <Chip variant="outlined" label={selectedDate} onDelete={handleDateDelete} style={{ margin: 8 }}/>
+                            </Tooltip>
                     }
                     {
                         (selectedSpeaker && selectedClassroom && selectedGroup.mode_of_study === 'fulltime') && 
-                                    <Tooltip title="Выбранная неделя" arrow>
-                                        <Chip variant="outlined" label={selectedWeekParity === 'even' ? 'Чётная' : 'Нечётная'} />
-                                    </Tooltip>
+                            <Tooltip title="Выбранная неделя" arrow>
+                                <Chip variant="outlined" label={selectedWeekParity === 'even' ? 'Чётная' : 'Нечётная'} style={{ margin: 8 }}/>
+                            </Tooltip>
                     }
                     {
                         (selectedSpeaker && selectedClassroom && selectedDay && selectedGroup.mode_of_study === 'fulltime') && 
-                                    <Tooltip title="Выбранный день" arrow>
-                                        <Chip variant="outlined" label={selectedDay} onDelete={handleDayDelete} />
-                                    </Tooltip>
+                            <Tooltip title="Выбранный день" arrow>
+                                <Chip variant="outlined" label={selectedDay} onDelete={handleDayDelete} style={{ margin: 8 }}/>
+                            </Tooltip>
                     }
                     {
                         (selectedSpeaker && selectedClassroom && selectedClassnumber) && 
-                                    <Tooltip title="Выбранный номер пары" arrow>
-                                        <Chip variant="outlined" label={selectedClassnumber} onDelete={handleClassnumberDelete} />
-                                    </Tooltip>
+                            <Tooltip title="Выбранный номер пары" arrow>
+                                <Chip variant="outlined" label={selectedClassnumber} onDelete={handleClassnumberDelete} style={{ margin: 8 }}/>
+                            </Tooltip>
+                    }
+                </div>
+                <div className="buttons">
+                    {
+                        ((selectedSpeaker && selectedClassroom && selectedDate && selectedClassnumber) || ( selectedSpeaker && selectedClassroom && selectedDay && selectedWeekParity && selectedClassnumber )) &&
+                        <>
+                            <Tooltip title="Добавить занятие как черновик" arrow>
+                                <Button variant="contained" style={{ margin: 8 }}>Добавить черновик</Button>
+                            </Tooltip>
+                            <Tooltip title="Опубликовать занятие в расписание" arrow>
+                                <Button variant="contained" color="primary" style={{ margin: 8 }}>Опубликовать занятие</Button>
+                            </Tooltip>
+                            <Tooltip title="Удалить занятие" arrow>
+                                <Button color="secondary" style={{ margin: 8 }}>Удалить занятие</Button>
+                            </Tooltip>
+                        </>
                     }
                 </div>
             </div>
