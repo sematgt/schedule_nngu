@@ -323,17 +323,35 @@ export default function Admin() {
 
     function publishClass() {
 
-        var data = JSON.stringify({
-            "date_day": selectedDate,
-            "class_number": parseInt(selectedClassnumber),
-            "speaker": speakerChoices.filter(s => s.name === selectedSpeaker)[0].id,
-            "subject": selectedSubject,
-            "classroom": classroomChoices.filter(c => c.name === selectedClassroom)[0].id,
-            "study_group": selectedGroup.id,
-            "term": selectedTerm.id
-        });
+        let data
+        let request
 
-        const request = new Request(ApiURI + '/post_distance_lesson/', {method: 'POST', body: data, headers: {'Content-Type': 'application/json'}});
+        if (selectedGroup.mode_of_study === 'distance') {
+            data = JSON.stringify({
+                "date_day": selectedDate,
+                "class_number": parseInt(selectedClassnumber),
+                "speaker": speakerChoices.filter(s => s.name === selectedSpeaker)[0].id,
+                "subject": selectedSubject,
+                "classroom": classroomChoices.filter(c => c.name === selectedClassroom)[0].id,
+                "study_group": selectedGroup.id,
+                "term": selectedTerm.id
+            })
+            request = new Request(ApiURI + '/post_distance_lesson/', {method: 'POST', body: data, headers: {'Content-Type': 'application/json'}});
+        }
+
+        if (selectedGroup.mode_of_study === 'fulltime') {
+            data = JSON.stringify({
+                "day": selectedDay,
+                "week_parity": selectedWeekParity,
+                "class_number": parseInt(selectedClassnumber),
+                "speaker": speakerChoices.filter(s => s.name === selectedSpeaker)[0].id,
+                "subject": selectedSubject,
+                "classroom": classroomChoices.filter(c => c.name === selectedClassroom)[0].id,
+                "study_group": selectedGroup.id,
+                "term": selectedTerm.id
+            })
+            request = new Request(ApiURI + '/post_fulltime_lesson/', {method: 'POST', body: data, headers: {'Content-Type': 'application/json'}});
+        }
 
         fetch(request)
         .then(response => response.text())
@@ -408,7 +426,7 @@ export default function Admin() {
                             label="Предмет"
                             options={loads.map(load => load.subject_name)}
                             clearText="Очистить"
-                            noOptionsText="Предмет не найден"
+                            noOptionsText="Предмет не найден. Внесите хотя бы один предмет в учебный график."
                             autoHighlight={true}
                             handleChange={handleChangeSubject}
                             getOptionLabel={option => option.name + ' - ' + option.s_type}

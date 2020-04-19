@@ -14,6 +14,7 @@ router.register('terms', views.TermViewSet)
 router.register('speakerblockedtimefulltime', views.SpeakerBlockedTimeFulltimeViewSet)
 router.register('speakerblockedtimedistance', views.SpeakerBlockedTimeDistanceViewSet)
 router.register('post_distance_lesson', views.PostLessonsDistance)
+router.register('post_fulltime_lesson', views.PostLessonsFulltime)
 
 
 urlpatterns = [

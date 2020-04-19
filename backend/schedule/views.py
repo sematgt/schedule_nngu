@@ -1,6 +1,6 @@
 import datetime
 from rest_framework import viewsets, generics
-from .serializers.serializers import LessonDistanceSerializer, StudyGroupSerializer, WeeksSerializer, LessonFulltimeSerializer, SubjectSerializer, SpeakerBlockedTimeFulltimeSerializer, SpeakerBlockedTimeDistanceSerializer, TermSerializer, LoadSerializer, PostLessonsDistanceSerializer
+from .serializers.serializers import LessonDistanceSerializer, StudyGroupSerializer, WeeksSerializer, LessonFulltimeSerializer, SubjectSerializer, SpeakerBlockedTimeFulltimeSerializer, SpeakerBlockedTimeDistanceSerializer, TermSerializer, LoadSerializer, PostLessonsDistanceSerializer, PostLessonsFulltimeSerializer
 from .models import StudyGroup, LessonDistance, Weeks, LessonFulltime, Subject, SpeakerBlockedTimeFulltime, SpeakerBlockedTimeDistance, Load, Term
 from .utils.calcutale import GetLessonsIn3Months, GetFirstDaysOfAllWeeks, ActualizeCurrentWeek
 from datetime import timedelta, date, datetime
@@ -56,3 +56,8 @@ class PostLessonsDistance(viewsets.ModelViewSet):
 
     queryset = LessonDistance.objects.all()
     serializer_class = PostLessonsDistanceSerializer
+
+class PostLessonsFulltime(viewsets.ModelViewSet):
+
+    queryset = LessonFulltime.objects.all()
+    serializer_class = PostLessonsFulltimeSerializer

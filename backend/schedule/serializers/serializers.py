@@ -110,3 +110,9 @@ class PostLessonsDistanceSerializer(serializers.ModelSerializer):
     class Meta:
         model = LessonDistance
         fields = '__all__'
+
+class PostLessonsFulltimeSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = LessonFulltime
+        fields = '__all__'
