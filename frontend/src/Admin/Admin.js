@@ -18,7 +18,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-
+import { useAuth } from '../Context/Auth'
 
 export default function Admin() {
     
@@ -31,8 +31,6 @@ export default function Admin() {
         'Часов в неделю', 
         'Пар в неделю'
     ]
-
-    // var scheduleUpdated
 
     // Components styles
 
@@ -90,8 +88,9 @@ export default function Admin() {
     const [selectedClassnumber, setSelectedClassnumber] = React.useState();
     const [scheduleUpdated, setScheduleUpdated] = React.useState();
 
-
+    // context hooks
     
+    const { setAuthTokens } = useAuth();
 
     // handle components changes
 
@@ -171,6 +170,10 @@ export default function Admin() {
         handleDateDelete();
         handleDayDelete();
         handleClassnumberDelete();
+    }
+
+    const handleLogOut = () => {
+        setAuthTokens();
     }
 
     // data fetching
@@ -366,10 +369,11 @@ export default function Admin() {
         <div className="Admin"> 
             <div className="header">
                 <Link to="./">Вернуться к расписанию <span role="img" aria-label="hat">🎓</span></Link>  
+                <Link to="./admin" onClick={handleLogOut}>Выйти <span role="img" aria-label="door">🚪</span></Link>  
+            </div>
                 <h2>
                 Административный интерфейс
                 </h2>
-            </div>
             <div className="selects">
                 {
                     groupsAndTermsLoading ? (<div className="helptext"><i>Загрузка учебных групп... </i></div>) : (
