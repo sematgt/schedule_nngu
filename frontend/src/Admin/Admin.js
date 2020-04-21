@@ -495,12 +495,12 @@ export default function Admin() {
                                 <Tooltip title="Опубликовать занятие в расписание" arrow>
                                     <Button variant="contained" color="primary" style={{ margin: 8 }} onClick={publishClass}>Опубликовать занятие</Button>
                                 </Tooltip>
-                                <Tooltip title="Добавить занятие как черновик" arrow>
+                                {/* <Tooltip title="Добавить занятие как черновик" arrow>
                                     <Button variant="contained" style={{ margin: 8 }}>Добавить черновик</Button>
                                 </Tooltip>
                                 <Tooltip title="Удалить занятие" arrow>
                                     <Button color="secondary" style={{ margin: 8 }}>Удалить занятие</Button>
-                                </Tooltip>
+                                </Tooltip> */}
                             </>
                             :
                             (selectedSpeaker && selectedClassroom) &&
