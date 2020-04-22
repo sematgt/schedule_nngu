@@ -206,12 +206,12 @@ class App extends React.Component {
         // check for errors
         for (var l of [weeksIsLoaded, groupsIsLoaded, lessons_distanceIsLoaded, lessons_fulltimeIsLoaded]) {
             if (l === false) {
-                return <div>Загрузка...</div>;
+                return <div className="helptext"><i>Загрузка...</i></div>;
             }
         }
         for (var e of [error_in_groups, error_in_weeks, error_in_lessons_distance, error_in_lessons_fulltime]) {
             if (e != null) {
-                return <div>Ошибка: {e.message} </div>;
+                return <div className="helptext"><i>Ошибка: {e.message} </i></div>;
             }
         }
         
