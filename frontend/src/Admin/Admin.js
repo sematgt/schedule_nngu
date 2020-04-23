@@ -174,6 +174,7 @@ export default function Admin() {
 
     const handleLogOut = () => {
         setAuthTokens();
+        localStorage.setItem("tokens", "")
     }
 
     // data fetching

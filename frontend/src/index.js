@@ -13,6 +13,10 @@ function Routing(props) {
 
     const [authTokens, setAuthTokens] = useState();
     
+    if (localStorage.getItem("tokens") && authTokens === undefined) {
+        setAuthTokens(localStorage.getItem("tokens"))
+    }
+
     const setTokens = (data) => {
         localStorage.setItem("tokens", JSON.stringify(data));
         setAuthTokens(data);
