@@ -5,7 +5,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Alert } from '@material-ui/lab'
 import { useAuth } from '../Context/Auth';
 import '../Admin/Admin.css'
-
+import { ApiURI } from '../AppConfig'
+import axios from 'axios'
 
 // card styles
 
@@ -42,30 +43,43 @@ const useStyles = makeStyles({
 function Login(props) {
     const [isLoggedIn, setLoggedIn] = useState(false);
     const [isError, setIsError] = useState(false);
+    const [error, setError] = useState("");
     const [userName, setUserName] = useState("");
     const [password, setPassword] = useState("");
     const { setAuthTokens } = useAuth();
     const referer = props.location.state.referer || '/';
     const classes = useStyles();
-  
+    const [credsEmpty, setCredsEmpty] = useState(false);
+
+
     function postLogin() {
+        setIsError(false);
+        setError("");
         
-    //   axios.post("https://www.somePlace.com/auth/login", {
-    //     userName,
-    //     password
-    //   }).then(result => {
-    //     if (result.status === 200) {
-    //       setAuthTokens(result.data);
-    //       setLoggedIn(true);
-    //     } else {
-        //       setIsError(true);
-        //     }
-        //   }).catch(e => {
-            //     setIsError(true);
-            //   });
-            
-        setAuthTokens('123');
-        setLoggedIn(true);
+        if (!userName || !password) {
+            setCredsEmpty(true);
+        } else {
+            setCredsEmpty(false);
+            axios.post(ApiURI + "/api/token/", {
+                "username": userName,
+                "password": password
+                })
+                .then(response => {
+                    if (response.status === 200) {
+                setAuthTokens(response.data.access);
+                setLoggedIn(true);
+                    } 
+                else {
+                    setIsError(true);
+                    setError("Ошибка. Обратитесь к администратору");
+                }
+                })
+                .catch(e => {
+                        setIsError(true);
+                        if (e.response && e.response.status === 401) {setError("Введены неправильные учетные данные")}
+                        else if (!error && !e.response) {setError("Сервер аутентификации недоступен")}
+                    });
+        }
     }
   
     if (isLoggedIn) {
@@ -75,6 +89,12 @@ function Login(props) {
     return (
         <div className="Login">
         <Link to="./">Вернуться к расписанию <span role="img" aria-label="hat">🎓</span></Link>  
+        {
+            credsEmpty && <Alert severity="error">Введите учетные данные</Alert>
+        }
+        {
+            isError && <Alert severity="error">{error}</Alert>
+        }
         <Card className={classes.root} raised={true}>
             <CardHeader title="✍ Система управления расписанием" className={classes.header}/>
             <CardContent className={classes.content}>
@@ -82,6 +102,8 @@ function Login(props) {
                     Введите учетные данные
                 </Typography>
                 <TextField 
+                    autoFocus={true}
+                    required={true}
                     className={classes.input}
                     size="small"
                     id="userName" 
@@ -93,6 +115,7 @@ function Login(props) {
                     }}
                 />
                 <TextField 
+                    required={true}
                     className={classes.input}
                     size="small"
                     id="password" 
@@ -111,7 +134,6 @@ function Login(props) {
                 </Button>
             </CardActions>
         </Card>
-        { isError &&<Alert severity="error">Введены неправильные учетные данные.</Alert> }
         </div>
     );
   }
