@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { Card, TextField, Button, Typography, CardContent, CardActions, CardHeader } from '@material-ui/core';
+import { Card, TextField, Button, Typography, CardContent, CardActions, CardHeader, FormControl } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { Alert } from '@material-ui/lab'
 import { useAuth } from '../Context/Auth';
@@ -60,7 +60,8 @@ function Login(props) {
     const [credsEmpty, setCredsEmpty] = useState(false);
 
 
-    function postLogin() {
+    function postLogin(event) {
+        event.preventDefault();
         setIsError(false);
         setError("");
         
@@ -104,6 +105,7 @@ function Login(props) {
             isError && <Alert className={classes.alert} severity="error">{error}</Alert>
         }
         <Card className={classes.root} raised={true}>
+            <form noValidate autoComplete="on" onSubmit={postLogin}>
             <CardHeader title="✍ Система управления расписанием" className={classes.header}/>
             <CardContent className={classes.content}>
                 <Typography variant="body2" color="textSecondary" component="p" gutterBottom className={classes.bodyText}>
@@ -137,10 +139,11 @@ function Login(props) {
                 />
             </CardContent>
             <CardActions className={classes.cardActions}>
-                <Button color="primary" onClick={postLogin}>
+                <Button type="submit" color="primary">
                 Войти
                 </Button>
             </CardActions>
+            </form>
         </Card>
         </div>
     );
