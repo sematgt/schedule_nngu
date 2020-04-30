@@ -18,7 +18,7 @@
     display: flex;
     font-family: 'Roboto', sans-serif;
     font-size: 40px;
-    opacity: 85%;
+    opacity: .85;
     padding-bottom: 4px;
     padding-left: 10px;
 }
@@ -29,7 +29,7 @@
     justify-content: center;
     font-family: 'Roboto', sans-serif;
     font-size: 23px;
-    opacity: 98%;
+    opacity: .98;
     font-weight: 400;
     overflow: visible;
     white-space: nowrap;
@@ -99,7 +99,7 @@
     font-family: 'Roboto', sans-serif;
     padding-bottom: 4px;
     font-size: 23px;
-    opacity: 98%;
+    opacity: .98;
     font-weight: 400;
     overflow: visible;
     white-space: nowrap;
