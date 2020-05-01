@@ -37,7 +37,7 @@ class SpeakerAdmin(admin.ModelAdmin):
 
 class WeeksAdmin(admin.ModelAdmin):
     list_display = ('week', 'current')
-    readonly_fields = ('week', 'current')
+    # readonly_fields = ('week', 'current')
     list_display_links = ('week',)
 
 class SubjectAdmin(admin.ModelAdmin):

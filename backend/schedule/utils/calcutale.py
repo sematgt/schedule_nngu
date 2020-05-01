@@ -14,6 +14,16 @@ def GetLessonsIn3Months() -> list:
 
     return date_list
 
+def GetAllDistanceLessons() -> list:
+LessonDistance = apps.get_model('schedule', 'LessonDistance')
+q = LessonDistance.objects.all()
+
+date_list = [str(l.date_day) for l in q]
+
+date_list.sort()
+
+return date_list
+
 def GetFirstDaysOfAllWeeks(date_list: list):
     first_days = []
     for date in date_list:

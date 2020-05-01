@@ -1,5 +1,5 @@
 from django.db import models
-from schedule.utils.calcutale import GetFirstDaysOfAllWeeks, GetLessonsIn3Months
+from schedule.utils.calcutale import GetFirstDaysOfAllWeeks, GetAllDistanceLessons
 import json
 from datetime import date, datetime, timedelta
 from django.core.validators import MinValueValidator, MaxValueValidator
@@ -194,7 +194,7 @@ class LessonDistanceQuerySet(models.QuerySet):
     def delete(self, *args, **kwargs):
         super().delete(*args, **kwargs)
         Weeks.objects.all().delete()
-        first_days_list = GetFirstDaysOfAllWeeks(GetLessonsIn3Months())
+        first_days_list = GetFirstDaysOfAllWeeks(GetAllDistanceLessons())
         for day in first_days_list:
             w = Weeks.objects.create(week=day)
             if datetime.strptime(day, '%Y-%m-%d').date().strftime('%Y-%m-%d') == GetFirstDaysOfAllWeeks([date.today().strftime('%Y-%m-%d')])[0]:
@@ -228,7 +228,7 @@ class LessonDistance(models.Model):
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
         Weeks.objects.all().delete()
-        first_days_list = GetFirstDaysOfAllWeeks(GetLessonsIn3Months())
+        first_days_list = GetFirstDaysOfAllWeeks(GetAllDistanceLessons())
         for day in first_days_list:
             w = Weeks.objects.create(week=day)
             if datetime.strptime(day, '%Y-%m-%d').date().strftime('%Y-%m-%d') == GetFirstDaysOfAllWeeks([date.today().strftime('%Y-%m-%d')])[0]:
@@ -239,7 +239,7 @@ class LessonDistance(models.Model):
     def delete(self, *args, **kwargs):
         super().delete(*args, **kwargs)
         Weeks.objects.all().delete()
-        first_days_list = GetFirstDaysOfAllWeeks(GetLessonsIn3Months())
+        first_days_list = GetFirstDaysOfAllWeeks(GetAllDistanceLessons())
         for day in first_days_list:
             w = Weeks.objects.create(week=day)
             if datetime.strptime(day, '%Y-%m-%d').date().strftime('%Y-%m-%d') == GetFirstDaysOfAllWeeks([date.today().strftime('%Y-%m-%d')])[0]:
