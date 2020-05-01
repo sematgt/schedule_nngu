@@ -8,8 +8,8 @@ from rest_framework_simplejwt.views import (
 )
 
 router = routers.DefaultRouter()
-router.register('lessons_distance', views.LessonDistanceViewSet)
-router.register('lessons_fulltime', views.LessonFulltimeViewSet)
+router.register('lessons_distance', views.LessonDistanceViewSet, basename='lessons_distance')
+router.register('lessons_fulltime', views.LessonFulltimeViewSet, basename='lessons_fulltime')
 router.register('groups', views.StudyGroupViewSet)
 router.register('weeks', views.WeeksViewSet)
 router.register('subjects', views.SubjectViewSet)
