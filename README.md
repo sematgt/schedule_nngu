@@ -1,6 +1,6 @@
 # 📅 Schedule nngu
 
-Django + React university schedule single page application for students with dedicated admin interface.
+Django + React university schedule single page application with dedicated admin interface.
 
 ![frontend](./previews/schedule-demo.gif)
 
